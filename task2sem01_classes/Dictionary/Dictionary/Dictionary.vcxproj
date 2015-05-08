@@ -82,6 +82,7 @@
     <ClCompile Include="Исходный код.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="avl.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>

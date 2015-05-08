@@ -1,3 +1,8 @@
+#pragma once 
+#include <iostream>
+
+using namespace std;
+
 /*
 	Шаблонный класс вектор:
 	- space = общее количество ячеек в массиве
@@ -12,42 +17,49 @@ class Vector
 {
 private:
 	int space;
-	U* arr;
+	U** arr;
 public:
 	int length;
-	Vector() : space(1), arr(new U[space]()), length(0) {}
+	Vector() : space(1), arr(new U *[space]()), length(0) {}
 	~Vector();
-	void append(U x);
-	U at(int index);
+	void append(U* x);
+	U* at(int index);
 
 };
 
 template <class U>
 Vector<U>::~Vector()
 {
-	delete[] arr;
+	for (int i = 0; i < length; i++)
+	{
+		delete[] arr[i];
+	}
 }
 
 template <class U>
-void Vector<U>::append(U x)
+void Vector<U>::append(U* x)
 {
 	// место кончилось
 	if (length + 1 > space)
 	{
-		U* slot = new U[space * 2]();
+		U** slot = new U*[space * 2]();
 		for (int i = 0; i < length; i++)
 		{
-			slot[i] = U(arr[i]);
+			slot[i] = new U(*arr[i]);
 		}
-		delete arr;
+		for (int i = 0; i < length; i++)
+		{
+			delete[] arr[i];
+		}
+		
 		arr = slot;
 		space *= 2;
 	}
-	arr[length++] = int(x);
+	arr[length++] = new U(*x);
 }
 
 template <class U>
-U Vector<U>::at(int index)
+U* Vector<U>::at(int index)
 {
 	return arr[index];
 }
