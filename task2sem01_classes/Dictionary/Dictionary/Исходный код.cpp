@@ -1,6 +1,10 @@
 #include <iostream>
 #include "list.h"
 #include "vector.h"
+#include "avl.h"
+#include "quickSort.h"
+#include <math.h>
+#include <string>
 
 using namespace std;
 
@@ -14,140 +18,63 @@ using namespace std;
 /*
 	План разработки:
 	+ Шаблонный список
-	+ Шаблонный вектор
-	- Шаблонное АВЛ дерево
+	+ Шаблонный вектор - не ок, нужно чтоб он памятью управлял
+	+ Шаблонное АВЛ дерево
+	- Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
 	- Шаблонный словарь
 */
 
-class AVLTree
+string minString(string a, string b)
 {
+	return a.size() >= b.size() ? b : a;
+}
 
-
+class Word
+{
 public:
-
-	// http://habrahabr.ru/post/150732/
-	struct Node // структура для представления узлов дерева
+	string english;
+	string russian;
+	Word() {}
+	Word(string e, string r) : english(e), russian(r) {}
+	friend bool operator<(Word& a, Word& b)
 	{
-		int key;
-		unsigned char height;
-		Node* left;
-		Node* right;
-		Node(int k) { key = k; left = right = 0; height = 1; }
-	};
-	Node* root;
-	AVLTree() : root(nullptr) {}
-	void append(int x)
-	{
-		root = insert(root, x);
+		string min = minString(a.english, b.english);
+		
+		int i = 0; 
+		int lMin = min.size();
+		while (i < lMin)
+		{
+			if (a.english[i] < b.english[i])
+				return true;
+			else if (a.english[i] > b.english[i])
+				return false;
+			i++;
+		}
+		return a.english.size() < b.english.size();
 	}
-	void remove(int x)
+	friend bool operator>(Word& a, Word& b)
 	{
-		root = remove(root, x);
+		return !(a < b) && a.english != b.english;
 	}
-
-	
-	
-	private:
-		unsigned char height(Node* p)
-		{
-			return p ? p->height : 0;
-		}
-		int bfactor(Node* p)
-		{
-			return height(p->right) - height(p->left);
-		}
-		void fixheight(Node* p)
-		{
-			unsigned char hl = height(p->left);
-			unsigned char hr = height(p->right);
-			p->height = (hl>hr ? hl : hr) + 1;
-		}
-		Node* rotateright(Node* p) // правый поворот вокруг p
-		{
-			Node* q = p->left;
-			p->left = q->right;
-			q->right = p;
-			fixheight(p);
-			fixheight(q);
-			return q;
-		}
-
-		Node* rotateleft(Node* q) // левый поворот вокруг q
-		{
-			Node* p = q->right;
-			q->right = p->left;
-			p->left = q;
-			fixheight(q);
-			fixheight(p);
-			return p;
-		}
-
-		Node* balance(Node* p) // балансировка узла p
-		{
-			fixheight(p);
-			if (bfactor(p) == 2)
-			{
-				if (bfactor(p->right) < 0)
-					p->right = rotateright(p->right);
-				return rotateleft(p);
-			}
-			if (bfactor(p) == -2)
-			{
-				if (bfactor(p->left) > 0)
-					p->left = rotateleft(p->left);
-				return rotateright(p);
-			}
-			return p; // балансировка не нужна
-		}
-		Node* findmin(Node* p) // поиск узла с минимальным ключом в дереве p 
-		{
-			return p->left ? findmin(p->left) : p;
-		}
-
-		Node* removemin(Node* p) // удаление узла с минимальным ключом из дерева p
-		{
-			if (p->left == 0)
-				return p->right;
-			p->left = removemin(p->left);
-			return balance(p);
-		}
-
-		Node* insert(Node* p, int k) // вставка ключа k в дерево с корнем p
-		{
-			if (!p) return new Node(k);
-			if (k<p->key)
-				p->left = insert(p->left, k);
-			else
-				p->right = insert(p->right, k);
-			return balance(p);
-		}
-
-		Node* remove(Node* p, int k) // удаление ключа k из дерева p
-		{
-			if (!p) return 0;
-			if (k < p->key)
-				p->left = remove(p->left, k);
-			else if (k > p->key)
-				p->right = remove(p->right, k);
-			else //  k == p->key 
-			{
-				Node* q = p->left;
-				Node* r = p->right;
-				delete p;
-				if (!r) return q;
-				Node* min = findmin(r);
-				min->right = removemin(r);
-				min->left = q;
-				return balance(min);
-			}
-			return balance(p);
-		}
-
-
 };
 
 int main()
 {
+	Word* one = new Word("hello", "привет");
+	Word* two = new Word("goodbay", "до свидания");
+	Word* three = new Word("astral", "блуждать");
+	List<Word>* list = new List<Word>();
+	list->append(one);
+	list->append(two);
+	list->append(three);
+	Word* arr = list->toArray();
+	delete list;
+	cout << arr[0].english << " " << arr[1].english << " " << arr[2].english <<   endl;
+	Quicksort<Word>(0, 3 - 1, arr);
+	cout << arr[0].english << " " << arr[1].english << " " << arr[2].english << endl;
+	delete[] arr;
+	//cout << ((*one) < (*two)) << endl;
+
 	// Тесты для списка
 	/*
 		List<int>* a = new List<int>();
@@ -169,19 +96,24 @@ int main()
 	*/
 
 	// Тесты для вектора
-		/*
+	/*
 		Vector<int>* b = new  Vector<int>();
-		b->append(1);
-		b->append(2);
-		b->append(3);
-		cout << b->at(0) << " " << b->at(1) << " " <<  b->at(2) << endl;
+		b->append(new int(1));
+		b->append(new int(2));
+		//b->append(new int(3));
+		cout << *b->at(0) << " " << *b->at(1) << " ";// << *b->at(2) << endl;
 		delete b;
-		*/
-	AVLTree* tree = new AVLTree();
-	tree->append(4);
-	tree->append(3);
-	tree->append(5);
-	cout << tree->root->key << " " << tree->root->left->key << " " << tree->root->right->key << endl;
+	*/	
+
+	// Тесты для дерева
+	/*
+		AVLTree<int>* tree = new AVLTree<int>();
+		tree->append(new int(1));
+		tree->append(new int(2));
+		tree->append(new int(3));
+		cout << *tree->root->key << " " << *tree->root->left->key << " " << *tree->root->right->key << endl;
+		delete tree;
+	*/
 
 
 	return 0;
