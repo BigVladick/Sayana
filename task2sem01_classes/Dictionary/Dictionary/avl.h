@@ -33,7 +33,10 @@ public:
 	AVLTree() : root(nullptr), amount(0) {}
 	~AVLTree();
 	void append(U* x);
+	bool has(U x);
 	void remove(U* x);
+	void print();
+	U* toArray();
 
 private:
 	unsigned char height(Node* p);
@@ -47,6 +50,8 @@ private:
 	Node* insert(Node* p, U* k); // вставка ключа k в дерево с корнем p
 	Node* remove(Node* p, U* k); // удаление ключа k из дерева p
 	void postfixFree(Node* x);
+	void print(Node* x);
+	void toArray(Node* x, U* ar, int& am);
 };
 
 template <class U>
@@ -187,4 +192,56 @@ void AVLTree<U>::postfixFree(Node* x)
 	x ? postfixFree(x->right) : 0;
 	if (x)
 		delete x;
+}
+
+template <class U>
+bool AVLTree<U>::has(U x)
+{
+	Node* slot = root;
+	while (slot)
+	{
+		if (*slot->key == x)
+			return true;
+		if (x < *slot->key)
+			slot = slot->left;
+		if (x > *slot->key)
+			slot = slot->right;
+	}
+	return false;
+}
+
+template <class U>
+void AVLTree<U>::print()
+{
+	print(root);
+}
+
+template <class U>
+void AVLTree<U>::print(Node* x)
+{
+	x ? print(x->left) : 0;
+	if (x)
+		cout << *x->key << endl;
+	x ? print(x->right) : 0;
+	
+}
+
+template <class U>
+U* AVLTree<U>::toArray()
+{
+	U* arr = new U[amount]();
+	int len = 0;
+	toArray(root, arr, len);
+	return arr;
+}
+
+template <class U>
+void AVLTree<U>::toArray(Node* x, U* ar, int& am)
+{
+	x ? toArray(x->left,ar,am)  : 0;
+	if (x)
+	{
+		ar[am++] = *x->key;
+	}
+	x ? toArray(x->right, ar, am) : 0;
 }

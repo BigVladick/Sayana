@@ -10,6 +10,8 @@ using namespace std;
 	- arr = сам динамический массив 
 	- append(U x) = добавить в конец массива
 	- at(int index) = обратиться по индексу
+	- has (U x) = проверка есть ли с таким значением
+	- 
 */
 
 template <class U>
@@ -23,6 +25,9 @@ public:
 	Vector() : space(1), arr(new U *[space]()), length(0) {}
 	~Vector();
 	void append(U* x);
+	bool has(U x);
+	void print();
+	U* toArray();
 	U* at(int index);
 
 };
@@ -62,4 +67,35 @@ template <class U>
 U* Vector<U>::at(int index)
 {
 	return arr[index];
+}
+
+template <class U>
+bool Vector<U>::has(U x)
+{
+	for (int i = 0; i < length; i++)
+	{
+		if (*arr[i] == x)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+template <class U>
+U* Vector<U>::toArray()
+{
+	U* arrNova = new U[length]();
+	for (int i = 0; i < length; i++)
+	{
+		arrNova[i] = *arr[i];
+	}
+	return arrNova;
+}
+
+template <class U>
+void Vector<U>::print()
+{
+	for (int i = 0; i < length; i++)
+		cout << *arr[i] << endl;
 }

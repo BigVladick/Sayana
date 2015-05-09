@@ -29,7 +29,9 @@ using namespace std;
 	+ Шаблонное АВЛ дерево
 	+ Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
 	+ Dictionary считывает и записывает список Words
-	- добавление уникального слова
+	+ добавление уникального слова в список. Завершение задачи
+	- 4 одинаковых функции для List(+), Vector(+), AVL
+	- Выделить интерфейс
 	- Шаблонный словарь
 */
 
@@ -53,6 +55,13 @@ class Dictionary
 private:
 	List<Word>* storage;
 	int amount;
+	
+public:
+	Dictionary() : storage(new List<Word>()), amount(0) {}
+	~Dictionary()
+	{
+		delete storage;
+	}
 	void sort()
 	{
 		Word* arr = storage->toArray();
@@ -61,12 +70,6 @@ private:
 		storage = new List<Word>();
 		storage->fromArray(arr, amount);
 		delete[] arr;
-	}
-public:
-	Dictionary() : storage(new List<Word>()), amount(0) {}
-	~Dictionary()
-	{
-		delete storage;
 	}
 	void print()
 	{
@@ -99,14 +102,11 @@ public:
 			}
 		}
 		read.close();
-
-		// отсортировали
-		sort();
-
 	}
 	// записываем в файл
 	void write()
 	{
+
 		ofstream outFile;
 		outFile.open("data.txt", ios::out);
 		Word* arr = storage->toArray();
@@ -132,14 +132,19 @@ int main()
 	// необходимо для вывода русских букв
 	setlocale(LC_ALL, "RUS");
 
+
+	// Тест, словарь на основе списка
+	/*
 	Dictionary* dic = new Dictionary();
 	dic->read();
 	dic->print();
 	dic->insert("success", "успех");
 	cout << "\n\n";
 	dic->print();
+	dic->sort();
 	dic->write();
 	delete dic;
+	*/
 
 	// Тесты список Word
 	/*
@@ -186,19 +191,26 @@ int main()
 		b->append(new int(1));
 		b->append(new int(2));
 		b->append(new int(3));
-		cout << *b->at(0) << " " << *b->at(1) << " ";// << *b->at(2) << endl;
+		b->print();
+		int* mas = b->toArray();
+		cout << mas[0] << " " << mas[1] << " " << mas[2] << endl;
 		delete b;
 	*/	
 
 	// Тесты для дерева
-	/*
+	
 		AVLTree<int>* tree = new AVLTree<int>();
 		tree->append(new int(1));
 		tree->append(new int(2));
 		tree->append(new int(3));
-		cout << *tree->root->key << " " << *tree->root->left->key << " " << *tree->root->right->key << endl;
+		//tree->print();
+		int* mas = tree->toArray();
+		cout << mas[0] << " " << mas[1] << " " << mas[2] << endl;
+		//cout << *tree->root->key << " " << *tree->root->left->key << " " << *tree->root->right->key << endl;
+		//cout << tree->has(5);
+		delete[] mas;
 		delete tree;
-	*/
+	
 
 
 	return 0;
