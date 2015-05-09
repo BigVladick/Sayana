@@ -1,7 +1,6 @@
 #include <iostream>
 #include "list.h"
 #include "quickSort.h"
-#include "tree.h"
 #include "huffman.h"
 
 using namespace std;
@@ -17,9 +16,7 @@ using namespace std;
 	- заприватить поля
 	- закомментить код
 
-	- нужно маленькое дерево
-	+ список работает с указателями
-	- убрать нафиг указатели
+	
 */
 
 int main()

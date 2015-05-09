@@ -82,7 +82,6 @@
     <ClInclude Include="huffman.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="quickSort.h" />
-    <ClInclude Include="tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

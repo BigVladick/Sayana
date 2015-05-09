@@ -21,9 +21,6 @@
     <ClInclude Include="quickSort.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
-    <ClInclude Include="tree.h">
-      <Filter>Файлы исходного кода</Filter>
-    </ClInclude>
     <ClInclude Include="huffman.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>

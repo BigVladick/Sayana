@@ -1,5 +1,4 @@
 #pragma once
-#include "tree.h"
 #include "list.h"
 
 class HuffmanElement
@@ -46,87 +45,48 @@ private:
 	string data;
 	List<HuffmanElement>* listTable;
 	int sizeTable;
-	void sortTable()
-	{
-		HuffmanElement* arr = listTable->toArray();
-		delete listTable;
-		Quicksort<HuffmanElement>(0, sizeTable - 1, arr);
-		listTable = new List<HuffmanElement>();
-		listTable->fromArray(arr, sizeTable);
-		delete[] arr;
-	}
 public:
 	Huffman(string s) : data(s), listTable(new List<HuffmanElement>()), sizeTable(0) {}
 	~Huffman()
 	{
 		delete listTable;
 	}
+
 	void buildTree()
 	{
-		// На основе списка из символов с частотами
-		// Построили список символов с частотами как узлов дерева
-		List<Node<HuffmanElement>>* list = new List<Node<HuffmanElement>>();
-		List<HuffmanElement>::Inner* slot = listTable->begin;
-		while (slot)
+		cout << "building...\n";
+		// пока хотябы 2
+		while (listTable->begin && listTable->begin->next)
 		{
-			list->append(new Node<HuffmanElement>(slot->value));
-			slot = slot->next;
-		}
-		cout << "all list before:\n";
-		list->print();
-		cout << endl << endl;
-		Tree<HuffmanElement>* tree = new Tree<HuffmanElement>();
-		//tree->print();
-		// пока есть хотябы 1 элемент
-		int stop = 0;
-		while (list->begin && stop < 2)
-		{
-			// Случай если есть 2
-			if (list->begin && list->begin->next)
+			// оба вне дерева => нужно объедить в дерево
+			if (listTable->begin->isLast() && listTable->begin->next->isLast())
 			{
-				
-				if (list->begin->value->value->symbol != '\0' && list->begin->next->value->value->symbol != '\0')
-				{ 
-					cout << "here\n";
-					Node<HuffmanElement>* father = new Node<HuffmanElement>(new HuffmanElement('\0', 0));
-					//tree->root = new Node<HuffmanElement>(new HuffmanElement('\0', 0));
-					father->left = list->begin->value;
-					father->right = list->begin->next->value;
-					list->remove(list->begin);
-					list->remove(list->begin);
-					father->value->frequency = father->left->value->frequency + father->right->value->frequency;
-					list->append(father);
-					list->sort();
-					if (stop == 1)
-					list->print();
-					//tree->print();
-				}
-				else
-				{
-
-				}
+				listTable->append(HuffmanElement('\0', 0));
+				listTable->end->value.frequency = listTable->begin->value.frequency + listTable->begin->next->value.frequency;
+				listTable->end->left = listTable->begin;
+				listTable->end->right = listTable->begin->next;
+				listTable->begin->father = listTable->end;
+				listTable->begin->next->father = listTable->end;
+				listTable->sort();
+				listTable->print();
 			}
-			// Случай если есть только 1
-			else
-			{
-
-			}
-			//list->remove(list->begin);
-			stop++;
+			break; // 
+			listTable->begin = listTable->begin->next;
 		}
 	}
+	
 	void buildTable()
 	{
 		int l = data.size();
 		for (int i = 0; i < l; i++)
 		{
-			HuffmanElement* current = new HuffmanElement(data[i], 1);
+			HuffmanElement current = HuffmanElement(data[i], 1);
 			// найдем такой элемент (попробуем)
-			List<HuffmanElement>::Inner * found = listTable->has(current);
+			List<HuffmanElement>::Inner* found = listTable->has(current);
 			if (found != nullptr)
 			{
 				// нужно частоту inc
-				found->value->frequency++;
+				found->value.frequency++;
 
 			}
 			else
@@ -135,8 +95,8 @@ public:
 				listTable->append(current);
 			}
 		}
-		sortTable();
-		//listTable->print();
+		listTable->sort();
+		listTable->print();
 	}
 
 
