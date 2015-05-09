@@ -6,7 +6,7 @@
 #include "word.h"
 #include "dictionary.h"
 
-#include <fstream>
+
 #include <locale.h> 
 
 
@@ -28,15 +28,12 @@ using namespace std;
 	+ Шаблонный список
 	+ Шаблонный вектор
 	+ Шаблонное АВЛ дерево
-	+ Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
+	+ Класс Word с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
 	+ Dictionary считывает и записывает список Words
-	+ добавление уникального слова в список. Завершение задачи
-	+ 4 одинаковых функции для List(+), Vector(+), AVL(+)  Описание!
+	+ 4 одинаковых функции для List(+), Vector(+), AVL(+)
 	+ Шаблонный словарь
+	- Комментарии
 
-	Отладка:
-	- Вектор падает
-	- вынести класс Dictionary
 */
 
 
@@ -60,18 +57,20 @@ int main()
 	// необходимо для вывода русских букв
 	setlocale(LC_ALL, "RUS");
 
-	// Вектор сука падает
-
 	// Тест словарь 
 	
-	Dictionary<Vector<Word>>* dic = new Dictionary<Vector<Word>>();
-	dic->read();
-	dic->print();
-	dic->insert("success", "успех");
+	// Смотри мы тут задаем, как будут храниться наши данные в List/Vecotr/AVLTree
+		//Dictionary<AVLTree<Word>>* dic = new Dictionary<AVLTree<Word>>();
+		Dictionary<List<Word>>* dic = new Dictionary<List<Word>>();
+		//Dictionary<Vector<Word>>* dic = new Dictionary<Vector<Word>>();
+
+	dic->read(); // считали
+	dic->print(); // вывели
+	dic->insert("success", "успех"); // попытка добавить
 	cout << "\n\n";
-	dic->print();
-	dic->sort();
-	dic->write();
+	dic->print(); // еще раз вывели
+	dic->sort(); // Быстрая сортировка данных, не нужна для AVL дерева
+	dic->write(); // записали в файл
 	delete dic;
 	
 	

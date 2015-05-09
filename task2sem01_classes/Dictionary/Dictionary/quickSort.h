@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Шаблонная Быстрая сортировка. Алгоритм гуглится :)
+*/
+
 template <class T>
 void change(int first, int second, T mas[]){
 	T tmp = mas[first];

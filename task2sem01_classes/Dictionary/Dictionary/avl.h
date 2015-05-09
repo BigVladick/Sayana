@@ -1,15 +1,17 @@
+
 /*
-	Класс АВЛ - дерево
-	- описание http://habrahabr.ru/post/150732/
-	- очищает данную ему память
-	- root = вершина дерева
-	- amount = количество элементов в дереве
-	- remove(U* x) - удалить элемент из дерева
-	- toArray() - вернет динамический массив
-	- append(U* value) - добавить новый элемент
-	- print() - выводит все значения
-	- bool has(U x) - есть ли тут элемент с таким значением
-	- fromArray(U arr[], int length) - добавить массив новых значений
+	AVLTree - АВЛ дерево. Подробно описано оно здесь http://habrahabr.ru/post/150732/ .
+	Так что я опишу то, что я внес дополнительно сюда.
+	- int amount = количество элементов в дереве
+	- void fromArray(U arr[], int length) = добавить массив элементов
+	- void remove(Inner* sacredfice) = удаляет элемент списка по адрессу
+	- void append(U value) = добавляет элемент в конец списка
+	- U* toArray() = преобразует дерево в динамический массив и возвращает его. Оболочка, логика в функции ниже:
+		- void toArray(Node* x, U* ar, int& am)
+	- void print() = вывод всех элементов списка. Это оболочка, вся логика в функции ниже.
+		- void print(Node* x)
+	- bool has(U x) =  есть ли тут элемент с таким значением
+	- void postfixFree(Node* x) = освобождает память. Обходит дерево Постфиксным способом (Погугли что это)
 
 */
 
@@ -22,23 +24,20 @@ public:
 	// http://habrahabr.ru/post/150732/
 	struct Node // структура для представления узлов дерева
 	{
-		U* key;
+		U key;
 		unsigned char height;
 		Node* left;
 		Node* right;
-		Node(U* k) { key = k; left = right = 0; height = 1; }
-		~Node()
-		{
-			delete key;
-		}
+		Node(U k) { key = k; left = right = 0; height = 1; }
+		~Node() {}
 	};
 	Node* root;
 	int amount;
 	AVLTree() : root(nullptr), amount(0) {}
 	~AVLTree();
-	void append(U* x);
+	void append(U x);
 	bool has(U x);
-	void remove(U* x);
+	void remove(U x);
 	void print();
 	U* toArray();
 	void fromArray(U arr[], int length);
@@ -52,8 +51,8 @@ private:
 	Node* balance(Node* p); // балансировка узла p
 	Node* findmin(Node* p); // поиск узла с минимальным ключом в дереве p 
 	Node* removemin(Node* p); // удаление узла с минимальным ключом из дерева p
-	Node* insert(Node* p, U* k); // вставка ключа k в дерево с корнем p
-	Node* remove(Node* p, U* k); // удаление ключа k из дерева p
+	Node* insert(Node* p, U k); // вставка ключа k в дерево с корнем p
+	Node* remove(Node* p, U k); // удаление ключа k из дерева p
 	void postfixFree(Node* x);
 	void print(Node* x);
 	void toArray(Node* x, U* ar, int& am);
@@ -67,14 +66,14 @@ AVLTree<U>::~AVLTree()
 }
 
 template <class U>
-void AVLTree<U>::append(U* x)
+void AVLTree<U>::append(U x)
 {
 	amount++;
 	root = insert(root, x);
 }
 
 template <class U>
-void AVLTree<U>::remove(U* x)
+void AVLTree<U>::remove(U x)
 {
 	amount--;
 	root = remove(root, x);
@@ -157,10 +156,10 @@ typename AVLTree<U>::Node* AVLTree<U>::removemin(Node* p) // удаление узла с мин
 }
 
 template <class U>
-typename AVLTree<U>::Node* AVLTree<U>::insert(Node* p, U* k) // вставка ключа k в дерево с корнем p
+typename AVLTree<U>::Node* AVLTree<U>::insert(Node* p, U k) // вставка ключа k в дерево с корнем p
 {
 	if (!p) return new Node(k);
-	if (*k<*(p->key))
+	if (k < p->key)
 		p->left = insert(p->left, k);
 	else
 		p->right = insert(p->right, k);
@@ -168,12 +167,12 @@ typename AVLTree<U>::Node* AVLTree<U>::insert(Node* p, U* k) // вставка ключа k 
 }
 
 template <class U>
-typename AVLTree<U>::Node* AVLTree<U>::remove(Node* p, U* k) // удаление ключа k из дерева p
+typename AVLTree<U>::Node* AVLTree<U>::remove(Node* p, U k) // удаление ключа k из дерева p
 {
 	if (!p) return 0;
-	if (*k < *(p->key))
+	if (k < *(p->key))
 		p->left = remove(p->left, k);
-	else if (*k > *(p->key))
+	else if (k > *(p->key))
 		p->right = remove(p->right, k);
 	else //  k == p->key 
 	{
@@ -205,11 +204,11 @@ bool AVLTree<U>::has(U x)
 	Node* slot = root;
 	while (slot)
 	{
-		if (*slot->key == x)
+		if (slot->key == x)
 			return true;
-		if (x < *slot->key)
+		if (x < slot->key)
 			slot = slot->left;
-		if (x > *slot->key)
+		if (x > slot->key)
 			slot = slot->right;
 	}
 	return false;
@@ -226,7 +225,7 @@ void AVLTree<U>::print(Node* x)
 {
 	x ? print(x->left) : 0;
 	if (x)
-		cout << *x->key << endl;
+		cout << x->key << endl;
 	x ? print(x->right) : 0;
 	
 }
@@ -246,7 +245,7 @@ void AVLTree<U>::toArray(Node* x, U* ar, int& am)
 	x ? toArray(x->left,ar,am)  : 0;
 	if (x)
 	{
-		ar[am++] = *x->key;
+		ar[am++] = x->key;
 	}
 	x ? toArray(x->right, ar, am) : 0;
 }
@@ -255,5 +254,5 @@ template <class U>
 void AVLTree<U>::fromArray(U arr[], int length)
 {
 	for (int i = 0; i < length; i++)
-		append(new U(arr[i]));
+		append(U(arr[i]));
 }
