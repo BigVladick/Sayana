@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+
+using namespace std;
+
 template <class U>
 
 /*
@@ -9,6 +13,7 @@ template <class U>
 	- fromArray(U arr[], int length) - добавить в список массив новых значений
 	- remove(Inner* sacredfice) - удалить из списка элемент по адресу
 	- append(U* value) - добавить новый элемент
+	- print() - выводит все значения
 
 */
 
@@ -49,6 +54,7 @@ public:
 	void append(U* value);
 	U* toArray();
 	~List();
+	void print();
 };
 
 template <class U>
@@ -128,5 +134,17 @@ List<U>::~List()
 		slot = begin;
 		begin = begin->next;
 		delete slot;
+	}
+}
+
+template <class U>
+void List<U>::print()
+{
+	Inner* slot = begin;
+	while (slot)
+	{
+		cout << *slot->value << endl;
+		slot = slot->next;
+		
 	}
 }

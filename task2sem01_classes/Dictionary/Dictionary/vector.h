@@ -55,7 +55,7 @@ void Vector<U>::append(U* x)
 		arr = slot;
 		space *= 2;
 	}
-	arr[length++] = new U(*x);
+	arr[length++] = x;
 }
 
 template <class U>

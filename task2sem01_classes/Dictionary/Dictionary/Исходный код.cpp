@@ -3,10 +3,17 @@
 #include "vector.h"
 #include "avl.h"
 #include "quickSort.h"
-#include <math.h>
-#include <string>
+#include "word.h"
+
+#include <fstream>
+#include <locale.h> 
+
 
 using namespace std;
+
+/*
+	В файле используется кодировка ANSI
+*/
 
 /*
 	CL06.	Реализовать структуры данных вектор (array), список (list), дерево (tree).
@@ -18,62 +25,123 @@ using namespace std;
 /*
 	План разработки:
 	+ Шаблонный список
-	+ Шаблонный вектор - не ок, нужно чтоб он памятью управлял
+	+ Шаблонный вектор
 	+ Шаблонное АВЛ дерево
-	- Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
+	+ Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
+	+ Dictionary считывает и записывает список Words
 	- Шаблонный словарь
 */
 
-string minString(string a, string b)
+int indexOf(string s, char a, int num)
 {
-	return a.size() >= b.size() ? b : a;
+	int l = s.size();
+	int k = 0;
+	for (int i = 0; i < l; i++)
+	{
+		if (s[i] == a)
+		{
+			if (k++ == num)
+				return i;
+		}
+	}
+	return -1;
 }
 
-class Word
+class Dictionary
 {
+private:
+	List<Word>* storage;
+	int amount;
 public:
-	string english;
-	string russian;
-	Word() {}
-	Word(string e, string r) : english(e), russian(r) {}
-	friend bool operator<(Word& a, Word& b)
+	Dictionary() : storage(new List<Word>()), amount(0) {}
+	~Dictionary()
 	{
-		string min = minString(a.english, b.english);
-		
-		int i = 0; 
-		int lMin = min.size();
-		while (i < lMin)
-		{
-			if (a.english[i] < b.english[i])
-				return true;
-			else if (a.english[i] > b.english[i])
-				return false;
-			i++;
-		}
-		return a.english.size() < b.english.size();
+		delete storage;
 	}
-	friend bool operator>(Word& a, Word& b)
+	void print()
 	{
-		return !(a < b) && a.english != b.english;
+		storage->print();
+	}
+	// читаем и сортируем
+	void read()
+	{
+		// считали
+		ifstream read;
+		read.open("data.txt", ios::in);
+		
+		if (read.is_open())
+		{
+			string str = "";
+			while (getline(read, str))
+			{
+				amount++;
+				string ru = "";
+				string en = "";
+				int l = str.size();
+				int splitter = indexOf(str, '-', 0);
+				for (int i = 0; i < splitter - 1; i++)
+				{
+					en += str[i];
+				}
+				for (int i = splitter + 2; i < l; i++)
+					ru += str[i];
+				storage->append(new Word(en, ru));
+			}
+		}
+		read.close();
+
+		// отсортировали
+		Word* arr = storage->toArray();
+		delete storage;
+		Quicksort<Word>(0, amount - 1, arr);
+		storage = new List<Word>();
+		storage->fromArray(arr, amount);
+		delete[] arr;
+
+	}
+	// записываем в файл
+	void write()
+	{
+		ofstream outFile;
+		outFile.open("data.txt", ios::out);
+		Word* arr = storage->toArray();
+		for (int i = 0; i < amount; i++)
+		{
+			outFile << arr[i].english << " - " << arr[i].russian << "\n";
+		}
+		outFile.close();
 	}
 };
 
 int main()
 {
-	Word* one = new Word("hello", "привет");
-	Word* two = new Word("goodbay", "до свидания");
-	Word* three = new Word("astral", "блуждать");
-	List<Word>* list = new List<Word>();
-	list->append(one);
-	list->append(two);
-	list->append(three);
-	Word* arr = list->toArray();
-	delete list;
-	cout << arr[0].english << " " << arr[1].english << " " << arr[2].english <<   endl;
-	Quicksort<Word>(0, 3 - 1, arr);
-	cout << arr[0].english << " " << arr[1].english << " " << arr[2].english << endl;
-	delete[] arr;
-	//cout << ((*one) < (*two)) << endl;
+	// необходимо для вывода русских букв
+	setlocale(LC_ALL, "RUS");
+
+	Dictionary* dic = new Dictionary();
+	dic->read();
+	dic->print();
+	//dic->write();
+	delete dic;
+
+	// Тесты список Word
+	/*
+		Word* one = new Word("hello", "привет");
+		Word* two = new Word("goodbay", "до свидания");
+		Word* three = new Word("astral", "блуждать");
+		Word arr2[] = { Word("zero", "ноль"), Word("year", "год") };
+		List<Word>* list = new List<Word>();
+		list->append(one);
+		list->append(two);
+		list->append(three);
+		list->fromArray(arr2,2);
+		Word* arr = list->toArray();
+		delete list;
+		cout << arr[0].english << " " << arr[1].english << " " << arr[2].english << " " << arr[3].english << " " << arr[4].english   <<  endl;
+		Quicksort<Word>(0, 5 - 1, arr);
+		cout << arr[0].english << " " << arr[1].english << " " << arr[2].english << " " << arr[3].english << " " << arr[4].english << endl;
+		delete[] arr;
+	*/
 
 	// Тесты для списка
 	/*
@@ -100,7 +168,7 @@ int main()
 		Vector<int>* b = new  Vector<int>();
 		b->append(new int(1));
 		b->append(new int(2));
-		//b->append(new int(3));
+		b->append(new int(3));
 		cout << *b->at(0) << " " << *b->at(1) << " ";// << *b->at(2) << endl;
 		delete b;
 	*/	
