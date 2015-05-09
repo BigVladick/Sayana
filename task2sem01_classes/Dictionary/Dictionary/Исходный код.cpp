@@ -29,6 +29,7 @@ using namespace std;
 	+ Шаблонное АВЛ дерево
 	+ Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
 	+ Dictionary считывает и записывает список Words
+	- добавление уникального слова
 	- Шаблонный словарь
 */
 
@@ -52,6 +53,15 @@ class Dictionary
 private:
 	List<Word>* storage;
 	int amount;
+	void sort()
+	{
+		Word* arr = storage->toArray();
+		delete storage;
+		Quicksort<Word>(0, amount - 1, arr);
+		storage = new List<Word>();
+		storage->fromArray(arr, amount);
+		delete[] arr;
+	}
 public:
 	Dictionary() : storage(new List<Word>()), amount(0) {}
 	~Dictionary()
@@ -91,12 +101,7 @@ public:
 		read.close();
 
 		// отсортировали
-		Word* arr = storage->toArray();
-		delete storage;
-		Quicksort<Word>(0, amount - 1, arr);
-		storage = new List<Word>();
-		storage->fromArray(arr, amount);
-		delete[] arr;
+		sort();
 
 	}
 	// записываем в файл
@@ -111,6 +116,15 @@ public:
 		}
 		outFile.close();
 	}
+	void insert(string e, string r)
+	{
+		Word* nova = new Word(e, r);
+		if (!storage->has(*nova))
+		{
+			storage->append(nova);
+			amount++;
+		}
+	}
 };
 
 int main()
@@ -121,7 +135,10 @@ int main()
 	Dictionary* dic = new Dictionary();
 	dic->read();
 	dic->print();
-	//dic->write();
+	dic->insert("success", "успех");
+	cout << "\n\n";
+	dic->print();
+	dic->write();
 	delete dic;
 
 	// Тесты список Word

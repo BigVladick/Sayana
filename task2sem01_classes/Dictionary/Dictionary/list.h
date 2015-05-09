@@ -14,6 +14,7 @@ template <class U>
 	- remove(Inner* sacredfice) - удалить из списка элемент по адресу
 	- append(U* value) - добавить новый элемент
 	- print() - выводит все значения
+	- bool has(U x) - есть ли тут элемент с таким значением
 
 */
 
@@ -55,6 +56,8 @@ public:
 	U* toArray();
 	~List();
 	void print();
+	// есть ли тут элемент с таким значением
+	bool has(U x);
 };
 
 template <class U>
@@ -147,4 +150,18 @@ void List<U>::print()
 		slot = slot->next;
 		
 	}
+}
+
+template <class U>
+bool List<U>::has(U x)
+{
+	Inner* slot = begin;
+	while (slot)
+	{
+		if (*slot->value == x)
+			return true;
+		slot = slot->next;
+
+	}
+	return false;
 }

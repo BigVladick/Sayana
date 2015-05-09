@@ -45,3 +45,8 @@ ostream& operator<<(ostream& cout, Word& time)
 	cout << time.english << " - " << time.russian;
 	return cout;
 }
+
+bool operator==(Word& a, Word& b)
+{
+	return a.english == b.english && a.russian == b.russian;
+}

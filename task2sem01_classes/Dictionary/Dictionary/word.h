@@ -19,6 +19,8 @@ public:
 	// нужны дл€ сортировки
 	friend bool operator<(Word& a, Word& b);
 	friend bool operator>(Word& a, Word& b);
+	// нужен дл€ уникальной вставки
+	friend bool operator==(Word& a, Word& b);
 	//  онструктор копировани€
 	Word(const Word& from);
 	// ќператор присваивани€
