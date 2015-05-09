@@ -15,6 +15,7 @@ public:
 	string english;
 	string russian;
 	Word() {}
+	~Word() {}
 	Word(string e, string r) : english(e), russian(r) {}
 	// нужны для сортировки
 	friend bool operator<(Word& a, Word& b);

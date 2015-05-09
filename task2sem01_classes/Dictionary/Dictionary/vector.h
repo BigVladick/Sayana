@@ -1,18 +1,7 @@
-#pragma once 
+п»ї#pragma once 
 #include <iostream>
 
 using namespace std;
-
-/*
-	Шаблонный класс вектор:
-	- space = общее количество ячеек в массиве
-	- length = кол-во занятый ячеек массива
-	- arr = сам динамический массив 
-	- append(U x) = добавить в конец массива
-	- at(int index) = обратиться по индексу
-	- has (U x) = проверка есть ли с таким значением
-	- 
-*/
 
 template <class U>
 class Vector
@@ -27,6 +16,7 @@ public:
 	void append(U* x);
 	bool has(U x);
 	void print();
+	void fromArray(U* arr, int size);
 	U* toArray();
 	U* at(int index);
 
@@ -37,14 +27,14 @@ Vector<U>::~Vector()
 {
 	for (int i = 0; i < length; i++)
 	{
-		delete[] arr[i];
+		delete arr[i];
 	}
+	delete[] arr;
 }
 
 template <class U>
 void Vector<U>::append(U* x)
 {
-	// место кончилось
 	if (length + 1 > space)
 	{
 		U** slot = new U*[space * 2]();
@@ -54,9 +44,10 @@ void Vector<U>::append(U* x)
 		}
 		for (int i = 0; i < length; i++)
 		{
-			delete[] arr[i];
+			delete arr[i];
 		}
-		
+		delete[] arr;
+
 		arr = slot;
 		space *= 2;
 	}
@@ -98,4 +89,13 @@ void Vector<U>::print()
 {
 	for (int i = 0; i < length; i++)
 		cout << *arr[i] << endl;
+}
+
+template <class U>
+void Vector<U>::fromArray(U* arr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		append(new U(arr[i]));
+	}
 }

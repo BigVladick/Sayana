@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avl.h" />
+    <ClInclude Include="dictionary.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="quickSort.h" />
     <ClInclude Include="vector.h" />

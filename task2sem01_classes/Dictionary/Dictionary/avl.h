@@ -4,8 +4,12 @@
 	- очищает данную ему память
 	- root = вершина дерева
 	- amount = количество элементов в дереве
-	- append(U* x) - добавить элемент в дерево
 	- remove(U* x) - удалить элемент из дерева
+	- toArray() - вернет динамический массив
+	- append(U* value) - добавить новый элемент
+	- print() - выводит все значения
+	- bool has(U x) - есть ли тут элемент с таким значением
+	- fromArray(U arr[], int length) - добавить массив новых значений
 
 */
 
@@ -37,6 +41,7 @@ public:
 	void remove(U* x);
 	void print();
 	U* toArray();
+	void fromArray(U arr[], int length);
 
 private:
 	unsigned char height(Node* p);
@@ -244,4 +249,11 @@ void AVLTree<U>::toArray(Node* x, U* ar, int& am)
 		ar[am++] = *x->key;
 	}
 	x ? toArray(x->right, ar, am) : 0;
+}
+
+template <class U>
+void AVLTree<U>::fromArray(U arr[], int length)
+{
+	for (int i = 0; i < length; i++)
+		append(new U(arr[i]));
 }

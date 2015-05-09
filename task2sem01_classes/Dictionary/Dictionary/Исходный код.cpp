@@ -4,6 +4,7 @@
 #include "avl.h"
 #include "quickSort.h"
 #include "word.h"
+#include "dictionary.h"
 
 #include <fstream>
 #include <locale.h> 
@@ -30,10 +31,14 @@ using namespace std;
 	+ Класс слово с необходимыми операторами. Дописать конструктор копирования и оператор присваивания.
 	+ Dictionary считывает и записывает список Words
 	+ добавление уникального слова в список. Завершение задачи
-	- 4 одинаковых функции для List(+), Vector(+), AVL
-	- Выделить интерфейс
-	- Шаблонный словарь
+	+ 4 одинаковых функции для List(+), Vector(+), AVL(+)  Описание!
+	+ Шаблонный словарь
+
+	Отладка:
+	- Вектор падает
+	- вынести класс Dictionary
 */
+
 
 int indexOf(string s, char a, int num)
 {
@@ -50,92 +55,16 @@ int indexOf(string s, char a, int num)
 	return -1;
 }
 
-class Dictionary
-{
-private:
-	List<Word>* storage;
-	int amount;
-	
-public:
-	Dictionary() : storage(new List<Word>()), amount(0) {}
-	~Dictionary()
-	{
-		delete storage;
-	}
-	void sort()
-	{
-		Word* arr = storage->toArray();
-		delete storage;
-		Quicksort<Word>(0, amount - 1, arr);
-		storage = new List<Word>();
-		storage->fromArray(arr, amount);
-		delete[] arr;
-	}
-	void print()
-	{
-		storage->print();
-	}
-	// читаем и сортируем
-	void read()
-	{
-		// считали
-		ifstream read;
-		read.open("data.txt", ios::in);
-		
-		if (read.is_open())
-		{
-			string str = "";
-			while (getline(read, str))
-			{
-				amount++;
-				string ru = "";
-				string en = "";
-				int l = str.size();
-				int splitter = indexOf(str, '-', 0);
-				for (int i = 0; i < splitter - 1; i++)
-				{
-					en += str[i];
-				}
-				for (int i = splitter + 2; i < l; i++)
-					ru += str[i];
-				storage->append(new Word(en, ru));
-			}
-		}
-		read.close();
-	}
-	// записываем в файл
-	void write()
-	{
-
-		ofstream outFile;
-		outFile.open("data.txt", ios::out);
-		Word* arr = storage->toArray();
-		for (int i = 0; i < amount; i++)
-		{
-			outFile << arr[i].english << " - " << arr[i].russian << "\n";
-		}
-		outFile.close();
-	}
-	void insert(string e, string r)
-	{
-		Word* nova = new Word(e, r);
-		if (!storage->has(*nova))
-		{
-			storage->append(nova);
-			amount++;
-		}
-	}
-};
-
 int main()
 {
 	// необходимо для вывода русских букв
 	setlocale(LC_ALL, "RUS");
 
+	// Вектор сука падает
 
-	// Тест, словарь на основе списка
-	/*
-	Dictionary* dic = new Dictionary();
+	// Тест словарь 
+	
+	Dictionary<Vector<Word>>* dic = new Dictionary<Vector<Word>>();
 	dic->read();
 	dic->print();
 	dic->insert("success", "успех");
@@ -144,7 +73,9 @@ int main()
 	dic->sort();
 	dic->write();
 	delete dic;
-	*/
+	
+	
+	
 
 	// Тесты список Word
 	/*
@@ -186,19 +117,21 @@ int main()
 	*/
 
 	// Тесты для вектора
-	/*
+	 /*
 		Vector<int>* b = new  Vector<int>();
 		b->append(new int(1));
 		b->append(new int(2));
 		b->append(new int(3));
+		b->append(new int(4));
+		b->append(new int(5));
 		b->print();
 		int* mas = b->toArray();
 		cout << mas[0] << " " << mas[1] << " " << mas[2] << endl;
 		delete b;
-	*/	
+	 */	
 
 	// Тесты для дерева
-	
+	/*
 		AVLTree<int>* tree = new AVLTree<int>();
 		tree->append(new int(1));
 		tree->append(new int(2));
@@ -210,6 +143,7 @@ int main()
 		//cout << tree->has(5);
 		delete[] mas;
 		delete tree;
+	*/
 	
 
 
