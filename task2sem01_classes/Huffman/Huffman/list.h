@@ -7,6 +7,10 @@ using namespace std;
 template <class U>
 
 /*
+	Измененем специально для Хаффмана
+*/
+
+/*
 Класс List - двусвязный список. Двусвязный, потому что  2 связи : next  и previous.
 - Inner = структура представляет собой 1 элемент списка
 - U value = значение этого элемента
@@ -86,6 +90,14 @@ public:
 		length = amount;
 		delete[] arr;
 	}
+	void print(Inner* x)
+	{
+		x ? print(x->left) : 0;
+		if (x)
+			cout << x->value << endl;
+		x ? print(x->right) : 0;
+
+	}
 };
 
 template <class U>
@@ -120,7 +132,7 @@ void List<U>::remove(Inner* sacredfice)
 		(sacredfice->previous)->next = nullptr;
 	}
 
-	delete sacredfice;
+	//delete sacredfice;
 	length--;
 	if (length == 0)
 	{

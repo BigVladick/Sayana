@@ -31,11 +31,15 @@ public:
 	}
 	friend bool operator<(HuffmanElement& a, HuffmanElement& b)
 	{
+		if (a.frequency == b.frequency)
+			return a.symbol < b.symbol;
 		return a.frequency < b.frequency;
 	}
 	friend bool operator>(HuffmanElement& a, HuffmanElement& b)
 	{
-		return !(a < b || a == b);
+		if (a.frequency == b.frequency)
+			return a.symbol > b.symbol;
+		return a.frequency > b.frequency;
 	}
 };
 
@@ -54,25 +58,46 @@ public:
 
 	void buildTree()
 	{
+		/*
+			√арантировано есть хот€бы 1 символ в строке
+			ћы изменили функцию remove в списке так, что она не чистит пам€ть
+			по завершении части алгоритма мы получим дерево.
+		*/
 		cout << "building...\n";
-		// пока хот€бы 2
-		while (listTable->begin && listTable->begin->next)
+
+		// и нужно рассмотреть когда 1 символ
+		if (listTable->begin->next == nullptr)
 		{
-			// оба вне дерева => нужно объедить в дерево
-			if (listTable->begin->isLast() && listTable->begin->next->isLast())
-			{
+			listTable->append(HuffmanElement('\0', 0));
+			listTable->end->value.frequency = listTable->begin->value.frequency;
+			listTable->end->left = listTable->begin;
+			listTable->begin->father = listTable->end;
+			listTable->remove(listTable->begin);
+
+		}
+		// пока хот€бы 2
+		while (listTable->begin->next)
+		{
+			// объедин€ем 2 элемента из списка в один и добавл€ем его в список
 				listTable->append(HuffmanElement('\0', 0));
 				listTable->end->value.frequency = listTable->begin->value.frequency + listTable->begin->next->value.frequency;
 				listTable->end->left = listTable->begin;
 				listTable->end->right = listTable->begin->next;
 				listTable->begin->father = listTable->end;
 				listTable->begin->next->father = listTable->end;
+				listTable->remove(listTable->begin);
+				listTable->remove(listTable->begin);
 				listTable->sort();
-				listTable->print();
-			}
-			break; // 
-			listTable->begin = listTable->begin->next;
 		}
+
+		// »меем дерево
+		// нужно научить список печатать дерево
+		//listTable->print(listTable->begin);
+		cout << listTable->begin->value << endl;
+		cout << listTable->begin->left->value << endl;
+		cout << listTable->begin->right->value << endl;
+		
+
 	}
 	
 	void buildTable()

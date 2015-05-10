@@ -29,8 +29,6 @@ int main()
 		tree->print();
 		delete tree;
 	*/
-
-
 	Huffman* huff = new Huffman("beep boop beer!");
 	huff->buildTable();
 	huff->buildTree();
