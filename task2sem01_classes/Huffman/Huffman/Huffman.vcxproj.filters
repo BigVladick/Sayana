@@ -21,10 +21,19 @@
     <ClInclude Include="huffman.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
+    <ClInclude Include="huffmanElement.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Исходный код.cpp">
       <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="huffman.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="huffmanElement.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

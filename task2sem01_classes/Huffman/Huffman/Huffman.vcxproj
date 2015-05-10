@@ -76,10 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="huffman.cpp" />
+    <ClCompile Include="huffmanElement.cpp" />
     <ClCompile Include="Исходный код.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="huffman.h" />
+    <ClInclude Include="huffmanElement.h" />
     <ClInclude Include="list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

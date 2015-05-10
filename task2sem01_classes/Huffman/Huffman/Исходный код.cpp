@@ -1,36 +1,25 @@
 #include <iostream>
-#include "list.h"
 #include "huffman.h"
 
 using namespace std;
 
-
+// суть алгоритма:
 // http://habrahabr.ru/post/144200/
 
 /*
 	План разработки:
-	- реализовать алгоритм для строк.
-	- считать из файла.
-	- побитовая запись и чтение из файла.
-	- заприватить поля
-	- закомментить код
+	+ реализовать алгоритм для строк.
+	- читать из файла
+	- работать с бинарниками
 
 	
 */
 
 int main()
 {
-	// тесты для дерева
-	/*
-		Tree<int>* tree = new Tree<int>(0);
-		tree->root->left = new Tree<int>::Node(1);
-		tree->root->right = new Tree<int>::Node(2);
-		tree->print();
-		delete tree;
-	*/
 	Huffman* huff = new Huffman("beep boop beer!");
-	huff->buildTable();
-	huff->buildTree();
+	cout << huff->Encode() << endl; // закодировали
+	cout << huff->Decode() << endl; // раскодировали
 	delete huff;
 	return 0;
 }
