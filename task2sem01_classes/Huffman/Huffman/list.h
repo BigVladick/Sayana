@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include "quickSort.h"
 
 using namespace std;
 
@@ -19,10 +18,8 @@ template <class U>
 - Inner* begin = начало списка
 - Inner* end = конец списка
 - int length = кол-во элементов в списке
-- void fromArray(U arr[], int length) = добавить массив элементов
 - void remove(Inner* sacredfice) = удаляет элемент списка по адрессу
 - void append(U value) = добавляет элемент в конец списка
-- U* toArray() = преобразует список в динамический массив и возвращает его
 - void print() = вывод всех элементов списка
 - U* has(U x) =  если элемент с таким значением есть, вернет указатель на него  иначе nullptr
 */
@@ -46,13 +43,13 @@ public:
 		Inner* left;
 		// указатель на правый
 		Inner* right;
-		// указатель на отца
-		Inner* father;
 		Inner() {}
 		~Inner() {}
-		Inner(U val) : value(val), next(nullptr), previous(nullptr), left(nullptr), right(nullptr), father(nullptr) {}
+		Inner(U val) : value(val), next(nullptr), previous(nullptr), left(nullptr), right(nullptr) {}
 		// проверка на (узел без потомков)
 		bool isLast() { return left == nullptr && right == nullptr; }
+
+		
 	};
 	// начало списка
 	Inner* begin;
@@ -61,35 +58,64 @@ public:
 	// length - длина всего списка
 	int length;
 	List() : begin(nullptr), end(nullptr), length(0){}
-	// добавляет массив в конец списка
-	void fromArray(U arr[], int length);
 	// удаляет элемент по адресу
 	void remove(Inner* sacredfice);
 	// append - добавляет элемент в конец списка
 	void append(U value);
-	U* toArray();
 	~List();
 	void print();
 	// есть ли тут элемент с таким значением
 	Inner* has(U x);
-	void sort()
+	Inner* insert(U x)
 	{
-		int amount = length;
-		U* arr = toArray();
-		Inner* slot = begin;
-		while (begin)
+		Inner* nova = new Inner(x);
+		if (begin == nullptr)
 		{
-			slot = begin;
-			begin = begin->next;
-			delete slot;
+			begin = nova;
+			end = nova;
+			return nova;
 		}
-		begin = nullptr;
-		end = nullptr;
-		Quicksort<U>(0, amount - 1, arr);
-		fromArray(arr, amount);
-		length = amount;
-		delete[] arr;
+		Inner* current = begin;
+		// добавляем в начало
+		if (x < current->value)
+		{
+			nova->next = current;
+			current->previous = nova;
+			begin = nova;
+			if (current->next == end)
+			{
+				end = current;
+			}
+		}
+		else
+		{
+			bool found = false;
+			while (current->next)
+			{
+				if (current->next->value > nova->value)
+				{
+					found = true;
+					break;
+				}
+				current = current->next;
+			}
+			if (found)
+			{
+				nova->next = current->next;
+				current->next->previous = nova;
+				current->next = nova;
+				nova->previous = current;
+			}
+			else
+			{
+				end->next = nova;
+				nova->previous = end;
+				end = nova;
+			}
+		}
+		return nova;
 	}
+
 	void print(Inner* x)
 	{
 		x ? print(x->left) : 0;
@@ -99,13 +125,6 @@ public:
 
 	}
 };
-
-template <class U>
-void List<U>::fromArray(U arr[], int length)
-{
-	for (int i = 0; i < length; i++)
-		append(U(arr[i]));
-}
 
 template <class U>
 void List<U>::remove(Inner* sacredfice)
@@ -157,20 +176,6 @@ void List<U>::append(U value)
 		end = slot;
 	}
 	length++;
-}
-
-template <class U>
-U* List<U>::toArray()
-{
-	U* arr = new U[length]();
-	Inner* slot = begin;
-	int index = 0;
-	while (slot)
-	{
-		arr[index++] = slot->value;
-		slot = slot->next;
-	}
-	return arr;
 }
 
 template <class U>

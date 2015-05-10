@@ -2,7 +2,7 @@
 
 Monomial::Monomial(const Monomial& from)
 {
-	degree = int(from.degree);
+	degree = from.degree;
 	coefficient = ComplexNumber(from.coefficient.value.real, from.coefficient.value.imaginary);
 }
 

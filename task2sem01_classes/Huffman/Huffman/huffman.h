@@ -35,6 +35,10 @@ public:
 			return a.symbol < b.symbol;
 		return a.frequency < b.frequency;
 	}
+	friend bool operator<=(HuffmanElement& a, HuffmanElement& b)
+	{
+		return (a.frequency == b.frequency) || (a < b);
+	}
 	friend bool operator>(HuffmanElement& a, HuffmanElement& b)
 	{
 		if (a.frequency == b.frequency)
@@ -71,31 +75,39 @@ public:
 			listTable->append(HuffmanElement('\0', 0));
 			listTable->end->value.frequency = listTable->begin->value.frequency;
 			listTable->end->left = listTable->begin;
-			listTable->begin->father = listTable->end;
 			listTable->remove(listTable->begin);
 
 		}
 		// пока хот€бы 2
-		while (listTable->begin->next)
+		while (listTable->begin && listTable->begin->next)
 		{
 			// объедин€ем 2 элемента из списка в один и добавл€ем его в список
-				listTable->append(HuffmanElement('\0', 0));
-				listTable->end->value.frequency = listTable->begin->value.frequency + listTable->begin->next->value.frequency;
-				listTable->end->left = listTable->begin;
-				listTable->end->right = listTable->begin->next;
-				listTable->begin->father = listTable->end;
-				listTable->begin->next->father = listTable->end;
+				int sumFreq = listTable->begin->value.frequency + listTable->begin->next->value.frequency;
+				List<HuffmanElement>::Inner* nova = listTable->insert(HuffmanElement('\0', sumFreq));
+				//listTable->append(HuffmanElement('\0', 0));
+				//listTable->end->value.frequency = listTable->begin->value.frequency + listTable->begin->next->value.frequency;
+
+				nova->left = listTable->begin;
+				nova->right = listTable->begin->next;
+
+
 				listTable->remove(listTable->begin);
 				listTable->remove(listTable->begin);
-				listTable->sort();
+
+				//cout << "\n";
+				//listTable->print(listTable->end);
+
+				//listTable->sort();
+				//listTable->print();
+				//cout << "\n";
+				//listTable->print(listTable->begin);
+				//cout << "\n\n";
+				//listTable->print(listTable->begin);
+				//break;
 		}
 
 		// »меем дерево
-		// нужно научить список печатать дерево
-		//listTable->print(listTable->begin);
-		cout << listTable->begin->value << endl;
-		cout << listTable->begin->left->value << endl;
-		cout << listTable->begin->right->value << endl;
+		// нужно научить список печатать дерев
 		
 
 	}
@@ -120,7 +132,15 @@ public:
 				listTable->append(current);
 			}
 		}
-		listTable->sort();
+		List<HuffmanElement>::Inner* slot = listTable->begin;
+		List<HuffmanElement>* sorted = new List<HuffmanElement>();
+		while (slot)
+		{
+			sorted->insert(slot->value);
+			slot = slot->next;
+		}
+		delete listTable;
+		listTable = sorted;
 		listTable->print();
 	}
 

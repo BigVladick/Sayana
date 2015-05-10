@@ -73,11 +73,17 @@ void List<U>::remove(Inner* sacredfice)
 	else
 	{
 		end = sacredfice->previous;
-		(sacredfice->previous)->next = nullptr;
+		if (sacredfice->previous)
+			(sacredfice->previous)->next = nullptr;
 	}
 
 	delete sacredfice;
 	length--;
+	if (length == 0)
+	{
+		begin = nullptr;
+		end = nullptr;
+	}
 }
 
 template <class U>

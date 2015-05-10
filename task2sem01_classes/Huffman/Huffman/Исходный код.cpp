@@ -1,6 +1,5 @@
 #include <iostream>
 #include "list.h"
-#include "quickSort.h"
 #include "huffman.h"
 
 using namespace std;
