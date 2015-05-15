@@ -5,24 +5,28 @@ size_t String::strLen(const char *str)
 	return (*str) ? strLen(++str) + 1 : 0;
 }
 
-String::String(const char* text)
+void String::strCpy(char* in_str, char* src_str)
 {
-	int l = strLen(text);
-	data = new char[l]();
+	for (int i = 0; i < strLen(in_str); i++)
+		in_str[i] = src_str[i];
+}
+
+int String::size()
+{
+	return length;
+}
+
+String::String(char* _str)
+{
+	int l = strLen(_str);
+	data = new char[l + 1];
 	length = l;
-	for (int i = 0; i < length; i++)
-	{
-		data[i] = text[i];
-	}
+	strCpy(data, _str);
 }
 
 ostream& operator<<(ostream& cout, String& time)
 {
-	for (int i = 0; i < time.length; i++)
-	{
-		cout << time.data[i];
-	}
-	return cout;
+	return cout << time.data;
 }
 
 bool operator==(String& a, String& b)
@@ -41,41 +45,44 @@ bool operator!=(String& a, String& b)
 
 String::~String()
 {
-	//cout << "destr for adress:" << &data[0] << endl;
-	//delete[] data;
+	delete[] data;
 }
 
-String& operator+(String& one, String& two)
+String* operator+(String& one, String& two)
 {
-	// создали
-	String result = String();
-	result.length = one.length + two.length;
-	result.data = new char[result.length]();
-	
-	// скопировали
+	String* result = new  String();
+	result->length = one.length + two.length;
+	result->data = new char[result->length + 1]();
 	int k = 0;
 	for (k; k < one.length; k++)
 	{
-		result.data[k] = one.data[k];
+		result->data[k] = one.data[k];
 	}
 	for (int i = k; i - k < two.length; i++)
 	{
-		result.data[i] = two.data[i-k];
+		result->data[i] = two.data[i - k];
 	}
-	return String("hui");
+	return result;
 }
 
-
-String& String::operator=(const String& from)
+String& String::operator+= (const String& from)
 {
-	
-	length = from.length;
-	cout << "l = " << from.length << endl;
-	data = new char[length]();
-	for (int i = 0; i < from.length; i++)
-	{
-		data[i] = from.data[i];
-	}
-	
+	int sz = strLen(this->data) + strLen(from.data);
+
+	char* ts = new char[sz + 1];
+
+	for (int i = 0; i < strLen(this->data); i++)
+		ts[i] = this->data[i];
+	for (int ii = strLen(this->data), j = 0; ii <= sz; ii++, j++)
+		ts[ii] = from.data[j];
+
+	delete this->data;
+	this->data = ts;
 	return *this;
+}
+
+const char& String::operator[](int i) const
+{
+	//std::cerr << "Index out of range. \n";
+	return (i >= 0 && i < strLen(this->data)) ? this->data[i] : 0;
 }
