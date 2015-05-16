@@ -18,10 +18,10 @@ using namespace std;
 */
 
 /*
-	CL06.	Реализовать структуры данных вектор (array), список (list), дерево (tree).
-	Написать программу «Словарь» (с использованием указанных структур хранения данных), 
-	которая позволяет считывать английские слова и их переводы из файла и по запросу пользователя
-	выводить перевод английских слов, добавлять отсутствующие слова, выводить в алфавитном порядке переводы слов в файл
+	CL07.	Реализовать структуры данных вектор (array), список (list), двоичное дерево (binary tree), хэш-таблица (hash table).
+	Написать программу «Словарь» (с использованием указанных структур хранения данных), которая позволяет считывать
+	английские слова и их переводы из файла и по запросу пользователя выводить перевод английских слов.
+	Словарь для тестирования dictionary.txt (каб. 4205).
 */
 
 /*
@@ -34,8 +34,8 @@ using namespace std;
 	+ 4 одинаковых функции для List(+), Vector(+), AVL(+)
 	+ Шаблонный словарь
 	+ Комментарии
-	- Написать шаблонную HT и проверить
-	- Проверить ее в словаре
+	+ Написать шаблонную HT и проверить
+	+ Проверить ее в словаре
 	- Обновить комментарии
 
 */
@@ -84,99 +84,6 @@ int main()
 	//dic->sort(); // Нужна только для вектора
 	dick->write(); // записали в файл
 	delete dick;
-	return 0;
-
-
-	
-
-	// Тест словарь 
-	
-	// Смотри мы тут задаем, как будут храниться наши данные в List/Vecotr/AVLTree
-		//Dictionary<AVLTree<Word>>* dic = new Dictionary<AVLTree<Word>>();
-		Dictionary<List<Word>>* dic = new Dictionary<List<Word>>();
-		//Dictionary<Vector<Word>>* dic = new Dictionary<Vector<Word>>();
-
-	dic->read(); // считали 
-	dic->print(); // вывели
-	dic->insert("success", "успех"); // попытка добавить
-	cout << "\n\n";
-	dic->print(); // еще раз вывели
-	//dic->sort(); // Нужна только для вектора
-	dic->write(); // записали в файл
-	delete dic;
-	
-	
-	
-
-	// Тесты список Word
-	/*
-		Word* one = new Word("hello", "привет");
-		Word* two = new Word("goodbay", "до свидания");
-		Word* three = new Word("astral", "блуждать");
-		Word arr2[] = { Word("zero", "ноль"), Word("year", "год") };
-		List<Word>* list = new List<Word>();
-		list->append(one);
-		list->append(two);
-		list->append(three);
-		list->fromArray(arr2,2);
-		Word* arr = list->toArray();
-		delete list;
-		cout << arr[0].english << " " << arr[1].english << " " << arr[2].english << " " << arr[3].english << " " << arr[4].english   <<  endl;
-		Quicksort<Word>(0, 5 - 1, arr);
-		cout << arr[0].english << " " << arr[1].english << " " << arr[2].english << " " << arr[3].english << " " << arr[4].english << endl;
-		delete[] arr;
-	*/
-
-	// Тесты для списка
-	/*
-		List<int>* a = new List<int>();
-		a->append(new int(1));
-		a->append(new int(2));
-		int *arr = new int[2]();
-		arr[0] = 3;
-		arr[1] = 4;
-		a->fromArray(arr,2);
-		cout << *(a->begin->value) << " " << *(a->begin->next->value) << " " << *(a->begin->next->next->value) << " "
-				<< *(a->begin->next->next->next->value)  << endl;
-		delete arr;
-		arr = a->toArray();
-		for (int i = 0; i < 4; i++)
-			cout << arr[i] << " ";
-		cout << endl;
-		delete arr;
-		delete a;
-	*/
-
-	// Тесты для вектора
-	 /*
-		Vector<int>* b = new  Vector<int>();
-		b->append(new int(1));
-		b->append(new int(2));
-		b->append(new int(3));
-		b->append(new int(4));
-		b->append(new int(5));
-		b->print();
-		int* mas = b->toArray();
-		cout << mas[0] << " " << mas[1] << " " << mas[2] << endl;
-		delete b;
-	 */	
-
-	// Тесты для дерева
-	/*
-		AVLTree<int>* tree = new AVLTree<int>();
-		tree->append(new int(1));
-		tree->append(new int(2));
-		tree->append(new int(3));
-		//tree->print();
-		int* mas = tree->toArray();
-		cout << mas[0] << " " << mas[1] << " " << mas[2] << endl;
-		//cout << *tree->root->key << " " << *tree->root->left->key << " " << *tree->root->right->key << endl;
-		//cout << tree->has(5);
-		delete[] mas;
-		delete tree;
-	*/
-	
-
 
 	return 0;
 }
