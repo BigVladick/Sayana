@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A18DA2D8-73B3-4EFF-BE50-5EB7D655773A}</ProjectGuid>
+    <ProjectGuid>{1E2686F0-5ED6-48F2-868B-BA05F52C9C29}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Dictionary</RootNamespace>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,20 +76,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="word.cpp" />
+    <ClCompile Include="hashTable.cpp" />
     <ClCompile Include="Исходный код.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="avl.h" />
-    <ClInclude Include="dictionary.h" />
     <ClInclude Include="hashTable.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="quickSort.h" />
-    <ClInclude Include="vector.h" />
-    <ClInclude Include="word.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

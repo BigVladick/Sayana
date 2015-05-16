@@ -32,7 +32,7 @@ private:
 public:
 	Dictionary() : storage(new U()), amount(0) {}
 	~Dictionary();
-	void sort();
+	//void sort();
 	void print();
 	void read();
 	// записываем в файл
@@ -47,6 +47,7 @@ Dictionary<U>::~Dictionary()
 	delete storage;
 }
 
+/*
 template <class U>
 void Dictionary<U>::sort()
 {
@@ -57,6 +58,7 @@ void Dictionary<U>::sort()
 	storage->fromArray(arr, amount);
 	delete[] arr;
 }
+*/
 
 template <class U>
 void Dictionary<U>::print()
@@ -101,6 +103,7 @@ void Dictionary<U>::write()
 	ofstream outFile;
 	outFile.open("data.txt", ios::out);
 	Word* arr = storage->toArray();
+	Quicksort<Word>(0, amount - 1, arr);
 	for (int i = 0; i < amount; i++)
 	{
 		outFile << arr[i].english << " - " << arr[i].russian << "\n";

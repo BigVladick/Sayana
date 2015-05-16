@@ -5,6 +5,7 @@
 #include "quickSort.h"
 #include "word.h"
 #include "dictionary.h"
+#include "hashTable.h"
 
 
 #include <locale.h> 
@@ -32,7 +33,10 @@ using namespace std;
 	+ Dictionary считывает и записывает список Words
 	+ 4 одинаковых функции для List(+), Vector(+), AVL(+)
 	+ Шаблонный словарь
-	- Комментарии
+	+ Комментарии
+	- Написать шаблонную HT и проверить
+	- Проверить ее в словаре
+	- Обновить комментарии
 
 */
 
@@ -57,6 +61,34 @@ int main()
 	// необходимо для вывода русских букв
 	setlocale(LC_ALL, "RUS");
 
+	/*
+	Word a = Word("vlad", "Влад");
+	Word b = Word("cat", "Кирилл");
+	cout << a.getHash(1000) << endl;
+	cout << b.getHash(1000) << endl;
+	// играемся с HT.
+	HashTable<Word> ht = HashTable<Word>();
+	ht.append(a);
+	ht.append(a);
+	ht.append(b);
+	ht.append(b);
+	ht.print();
+	*/
+
+	Dictionary<HashTable<Word>>* dick = new Dictionary<HashTable<Word>>();
+	dick->read(); // считали 
+	dick->print(); // вывели
+	dick->insert("success", "успех"); // попытка добавить
+	cout << "\n";
+	dick->print(); // еще раз вывели
+	//dic->sort(); // Нужна только для вектора
+	dick->write(); // записали в файл
+	delete dick;
+	return 0;
+
+
+	
+
 	// Тест словарь 
 	
 	// Смотри мы тут задаем, как будут храниться наши данные в List/Vecotr/AVLTree
@@ -64,12 +96,12 @@ int main()
 		Dictionary<List<Word>>* dic = new Dictionary<List<Word>>();
 		//Dictionary<Vector<Word>>* dic = new Dictionary<Vector<Word>>();
 
-	dic->read(); // считали
+	dic->read(); // считали 
 	dic->print(); // вывели
 	dic->insert("success", "успех"); // попытка добавить
 	cout << "\n\n";
 	dic->print(); // еще раз вывели
-	dic->sort(); // Быстрая сортировка данных, не нужна для AVL дерева
+	//dic->sort(); // Нужна только для вектора
 	dic->write(); // записали в файл
 	delete dic;
 	
