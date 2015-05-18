@@ -4,6 +4,7 @@
 #include "complexNumber.h"
 #include "monomial.h"
 #include "polynomial.h"
+#include "longNumber.h"
 
 using namespace std;
 
@@ -17,6 +18,12 @@ CL13.	Реализовать шаблон класса «полином». Работоспособность тестируется для вар
 
 int main()
 {
+	LongNumber x1 = LongNumber("21");
+	LongNumber x2 = LongNumber("15");
+	LongNumber x3 = x1 * x2;
+	cout << x3 << endl;
+	return 0;
+
 	ComplexNumber a = ComplexNumber(1, 1);
 	ComplexNumber b = ComplexNumber(1, -1);
 	ComplexNumber c = ComplexNumber(-1, 1);
