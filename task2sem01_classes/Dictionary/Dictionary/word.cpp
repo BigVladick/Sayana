@@ -58,10 +58,6 @@ bool operator==(Word& a, Word& b)
 
 int Word::getHash(int size)
 {
-	if (english == "vlad") //
-		return 1;
-	if (english == "cat") // 
-		return 2;
 	int  l1 = russian.size();
 	int  l2 = english.size();
 	char* str = new char[l1+l2]();

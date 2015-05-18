@@ -72,3 +72,13 @@ ostream& operator<<(ostream& cout, ComplexNumber& complex)
 	}
 	return cout;
 }
+
+bool  ComplexNumber::operator!()
+{
+	return *this == ComplexNumber(0, 0);
+}
+
+ComplexNumber& operator*(ComplexNumber& one, int num)
+{
+	return ComplexNumber(one.value.real * num, one.value.imaginary * num);
+}

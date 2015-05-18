@@ -16,11 +16,13 @@ class ComplexNumber
 	friend ComplexNumber& operator+(ComplexNumber& one, ComplexNumber& two);
 	friend ComplexNumber& operator-(ComplexNumber& one, ComplexNumber& two);
 	friend ComplexNumber& operator*(ComplexNumber& one, ComplexNumber& two);
+	friend ComplexNumber& operator*(ComplexNumber& one, int num);
 	friend ComplexNumber& operator/(ComplexNumber& one, ComplexNumber& two);
 	friend bool operator==(ComplexNumber& one, ComplexNumber& two);
 	friend bool operator!=(ComplexNumber& one, ComplexNumber& two);
 	friend ComplexNumber& operator++(ComplexNumber& one);
 	friend ComplexNumber& operator--(ComplexNumber& one);
+	
 	// Тип значение комлпексного числа состоит из мнимой и вещественной частей.
 public:
 	struct ComplexValue
@@ -30,8 +32,12 @@ public:
 		double real;
 		double imaginary;
 	};
-
-
+	bool  operator! ();
+	ComplexNumber& operator=(const int& num)
+	{
+		value = ComplexValue(num, 0);
+		return *this;
+	}
 	ComplexValue value;
 	ComplexNumber() { ComplexNumber(0, 0); }
 	ComplexNumber(double re, double im) : value(ComplexValue(re, im)) {}

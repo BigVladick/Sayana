@@ -26,7 +26,6 @@ class String
 	friend String* operator+(String& one, String& two);
 	friend ostream& operator<<(ostream& cout, String& time);
 	
-
 private:
 	static size_t strLen(const char *str);
 	static void strCpy(char* in_str, char* src_str);

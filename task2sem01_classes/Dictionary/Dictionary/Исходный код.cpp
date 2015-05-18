@@ -75,15 +75,15 @@ int main()
 	ht.print();
 	*/
 
-	Dictionary<HashTable<Word>>* dick = new Dictionary<HashTable<Word>>();
-	dick->read(); // считали 
-	dick->print(); // вывели
-	dick->insert("success", "успех"); // попытка добавить
+	Dictionary<HashTable<Word>>* dic = new Dictionary<HashTable<Word>>();
+	dic->read(); // считали 
+	dic->print(); // вывели
+	dic->insert("success", "успех"); // попытка добавить
 	cout << "\n";
-	dick->print(); // еще раз вывели
+	dic->print(); // еще раз вывели
 	//dic->sort(); // Нужна только для вектора
-	dick->write(); // записали в файл
-	delete dick;
+	dic->write(); // записали в файл
+	delete dic;
 
 	return 0;
 }

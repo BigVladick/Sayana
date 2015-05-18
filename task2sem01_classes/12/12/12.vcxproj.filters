@@ -21,18 +21,9 @@
     <ClCompile Include="complexNumber.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="monomial.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="polynomial.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="list.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="quickSort.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="complexNumber.h">

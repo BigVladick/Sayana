@@ -38,6 +38,7 @@ bool operator==(String& a, String& b)
 			return false;
 	return true;
 }
+
 bool operator!=(String& a, String& b)
 {
 	return !(a == b);
@@ -69,16 +70,19 @@ String& String::operator+= (const String& from)
 {
 	int sz = strLen(this->data) + strLen(from.data);
 
-	char* ts = new char[sz + 1];
+	char* newArray = new char[sz + 1];
 
-	for (int i = 0; i < strLen(this->data); i++)
-		ts[i] = this->data[i];
-	for (int ii = strLen(this->data), j = 0; ii <= sz; ii++, j++)
-		ts[ii] = from.data[j];
+	int i = 0;
+	for (i; i < strLen(this->data); i++)
+		newArray[i] = this->data[i];
+
+	for (i; i <= sz; i++)
+		newArray[i] = from.data[i - strlen(this->data)];
 
 	delete this->data;
-	this->data = ts;
-	return *this;
+	this->data = newArray;
+
+	return *this; //
 }
 
 const char& String::operator[](int i) const

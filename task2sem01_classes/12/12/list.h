@@ -1,8 +1,25 @@
 #pragma once
+#include <iostream>
+
+using namespace std;
+
 template <class U>
 
 /*
-Двусвязный шаблонный список
+Класс List - двусвязный список. Двусвязный, потому что  2 связи : next  и previous.
+- Inner = структура представляет собой 1 элемент списка
+- U value = значение этого элемента
+- Inner* next = указатель на следующий элемент списка
+- Inner* previous = указатель на предыдущий элемент списка
+- Inner* begin = начало списка
+- Inner* end = конец списка
+- int length = кол-во элементов в списке
+- void fromArray(U arr[], int length) = добавить массив элементов
+- void remove(Inner* sacredfice) = удаляет элемент списка по адрессу
+- void append(U value) = добавляет элемент в список ПО ПОРЯДКУ
+- U* toArray() = преобразует список в динамический массив и возвращает его
+- void print() = вывод всех элементов списка
+- bool has(U x) =  есть ли тут элемент с таким значением
 */
 
 class List
@@ -14,18 +31,15 @@ public:
 	*/
 	struct Inner
 	{
-		// указатель на его значение
-		U* value;
+		// значение
+		U value;
 		// указатель на следующий
 		Inner* next;
 		// указатель на предыдущий
 		Inner* previous;
 		Inner() {}
-		~Inner()
-		{
-			delete value;
-		}
-		Inner(U* val) : value(val), next(nullptr), previous(nullptr) {}
+		~Inner() {}
+		Inner(U val) : value(val), next(nullptr), previous(nullptr) {}
 	};
 	// начало списка
 	Inner* begin;
@@ -39,16 +53,19 @@ public:
 	// удаляет элемент по адресу
 	void remove(Inner* sacredfice);
 	// append - добавляет элемент в конец списка
-	void append(U* value);
+	void append(U value);
 	U* toArray();
 	~List();
+	void print();
+	// есть ли тут элемент с таким значением
+	bool has(U x);
 };
 
 template <class U>
 void List<U>::fromArray(U arr[], int length)
 {
 	for (int i = 0; i < length; i++)
-		append(new U(arr[i]));
+		append(U(arr[i]));
 }
 
 template <class U>
@@ -73,35 +90,58 @@ void List<U>::remove(Inner* sacredfice)
 	else
 	{
 		end = sacredfice->previous;
-		if (sacredfice->previous)
-			(sacredfice->previous)->next = nullptr;
+		(sacredfice->previous)->next = nullptr;
 	}
 
 	delete sacredfice;
 	length--;
-	if (length == 0)
-	{
-		begin = nullptr;
-		end = nullptr;
-	}
 }
 
 template <class U>
-void List<U>::append(U* value)
+void List<U>::append(U x)
 {
+	length++;
+	Inner* nova = new Inner(x);
 	if (begin == nullptr)
 	{
-		begin = new Inner(value);
-		end = begin;
+		begin = nova;
+		end = nova;
+		return;
+	}
+	Inner* current = begin;
+
+	if (x < current->value)
+	{
+		nova->next = current;
+		current->previous = nova;
+		begin = nova;
 	}
 	else
 	{
-		Inner* slot = new Inner(value);
-		slot->previous = end;
-		end->next = slot;
-		end = slot;
+		bool found = false;
+		while (current->next)
+		{
+			if (current->next->value >= nova->value)
+			{
+				found = true;
+				break;
+			}
+			current = current->next;
+		}
+		if (found)
+		{
+			nova->next = current->next;
+			current->next->previous = nova;
+			current->next = nova;
+			nova->previous = current;
+		}
+		else
+		{
+			end->next = nova;
+			nova->previous = end;
+			end = nova;
+		}
 	}
-	length++;
 }
 
 template <class U>
@@ -112,7 +152,7 @@ U* List<U>::toArray()
 	int index = 0;
 	while (slot)
 	{
-		arr[index++] = *slot->value;
+		arr[index++] = slot->value;
 		slot = slot->next;
 	}
 	return arr;
@@ -128,4 +168,30 @@ List<U>::~List()
 		begin = begin->next;
 		delete slot;
 	}
+}
+
+template <class U>
+void List<U>::print()
+{
+	Inner* slot = begin;
+	while (slot)
+	{
+		cout << slot->value << endl;
+		slot = slot->next;
+
+	}
+}
+
+template <class U>
+bool List<U>::has(U x)
+{
+	Inner* slot = begin;
+	while (slot)
+	{
+		if (slot->value == x)
+			return true;
+		slot = slot->next;
+
+	}
+	return false;
 }

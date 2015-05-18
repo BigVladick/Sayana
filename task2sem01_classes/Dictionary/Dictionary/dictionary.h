@@ -1,7 +1,7 @@
 #include <fstream>
 #include "quickSort.h"
 
-template <class U>
+
 
 
 /*
@@ -22,7 +22,7 @@ template <class U>
 	- void write() = записывает в файл data.txt
 	- void insert(string e, string r) = добавляет новое слово
 */
-
+template <class U>
 class Dictionary
 {
 private:
