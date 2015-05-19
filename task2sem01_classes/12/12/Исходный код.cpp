@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <memory>
 #include "list.h"
 #include "complexNumber.h"
 #include "monomial.h"
@@ -18,12 +19,20 @@ CL13.	Реализовать шаблон класса «полином». Работоспособность тестируется для вар
 
 int main()
 {
-	LongNumber x1 = LongNumber("21");
-	LongNumber x2 = LongNumber("3");
-	LongNumber x3 = x1 + x2;
-	cout << x3 << endl;
+	LongNumber x1 = LongNumber("1");
+	LongNumber x2 = LongNumber("2");
+	LongNumber x3 = LongNumber("3");
+	LongNumber x4 = LongNumber("4");
+
+	List<Monomial<LongNumber>>* monomials = new List<Monomial<LongNumber>>();
+	monomials->append(Monomial<LongNumber>(x1, 0)); //1
+	//monomials->append(Monomial<LongNumber>(x2, 1)); //2x
+	//monomials->append(Monomial<LongNumber>(x3, 2)); //3x^2
+	//monomials->append(Monomial<LongNumber>(x4, 3)); //4x^3
+	monomials->print();
 	return 0;
 
+	/*
 	ComplexNumber a = ComplexNumber(1, 1);
 	ComplexNumber b = ComplexNumber(1, -1);
 	ComplexNumber c = ComplexNumber(-1, 1);
@@ -107,6 +116,5 @@ int main()
 	delete div;
 	delete div2;
 	*/
-
 	return 0;
 }

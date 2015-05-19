@@ -8,17 +8,22 @@ LongNumber::LongNumber(char* s)
 		value[i] = s[i] - '0';
 }
 
-LongNumber::LongNumber(int* s, int l)
+LongNumber::LongNumber(const LongNumber & object)
 {
-	length = l;
+	length = object.length;
 	value = new int[length];
 	for (int i = 0; i < length; i++)
-		value[i] = s[i];
+		value[i] = object.value[i];
 }
 
-LongNumber::~LongNumber()
+bool operator == (LongNumber& a, LongNumber& b)
 {
-	delete[] value;
+	return (!(a < b) && !(b < a));
+}
+
+bool operator <= (LongNumber& a, LongNumber& b)
+{
+	return a == b || a < b;
 }
 
 LongNumber& LongNumber::addZeroes(int x) //+
@@ -73,16 +78,6 @@ bool operator < (LongNumber& first, LongNumber& second)
 		}
 	}
 	return false;
-}
-
-bool operator == (LongNumber& a, LongNumber& b)
-{
-	return ( !(a < b) && !(b < a) );
-}
-
-bool operator <= (LongNumber& a, LongNumber& b)
-{
-	return a == b || a < b;
 }
 
 LongNumber& LongNumber::reduce()
@@ -142,14 +137,14 @@ LongNumber& operator+(LongNumber& f, LongNumber& s)
 	char* arr = new char[l + 1]();
     for (int i = 0; i < l; i++)
 		arr[i] = result[l - 1 - i];
-	return LongNumber(arr);
+	return * (new LongNumber(arr));
 }
 
-LongNumber& LongNumber::max(LongNumber& a, LongNumber& b)
+LongNumber LongNumber::max(LongNumber a, LongNumber b)
 {
 	return a < b ? b : a;
 }
-LongNumber& LongNumber::min(LongNumber& a, LongNumber& b)
+LongNumber LongNumber::min(LongNumber a, LongNumber b)
 {
 	return a < b ? a : b;
 }
@@ -183,14 +178,11 @@ LongNumber& operator-(LongNumber& f, LongNumber& s)
 	char* arr = new char[l + 1]();
 	for (int i = 0; i < l; i++)
 		arr[i] = result[l - 1 - i];
-	LongNumber x = LongNumber(arr);
-	x.reduce();
-	return x;
+	return (new LongNumber(arr))->reduce();
 }
 
 LongNumber& operator*(LongNumber& f, LongNumber& s)
 {
-
 	LongNumber ans = LongNumber("0");
 
 	LongNumber first = LongNumber::max(f, s);
@@ -224,52 +216,73 @@ LongNumber& operator*(LongNumber& f, LongNumber& s)
 		LongNumber x = LongNumber(arr).addZeroes(i);
 		ans = ans + x;
 	}
-	return ans;
+	
+	return *(new LongNumber(ans));
 }
 
 LongNumber& operator/(LongNumber& f, LongNumber& s)
 {
 	LongNumber first = LongNumber::max(f, s);
 	LongNumber second = LongNumber::min(f, s);
-	
-	//LongNumber  *b = new LongNumber(first.value, first.length);
-	//LongNumber  *c = new LongNumber(second.value, second.length);
-	
-	
-	string result = "";
-	/*
+	LongNumber* b = new LongNumber(first);
+	LongNumber* c = new LongNumber(second);
 
+	string result = "";
+	
 	// сначала опишу 1 итерацию
-	while (c < b)
+	while (*c < *b)
 	{
 		
-		// Шаг первый добавим нулей.
+		// Шаг 1 добавим нулей.
 		delete c;
-		c = new LongNumber(second.value, second.length);
-		
+		c = new LongNumber(second);
 		int diff = b->length - c->length;
 		if (b->value[0] < c->value[0])
 			diff--;
 		c->addZeroes(diff);
-		cout << "here ok\n";
-		break;
+
 		// Шаг 2 будет отнимать
 		int times = 0;
-		while (c <= b)
+		while (*c <= *b)
 		{
-			*b = *b - *c;
+			LongNumber x = *b -*c;
+			delete b;
+			b = new LongNumber(x);
 			times++;
 		}
 		result += char(times + '0');
 		delete c;
-		c = new LongNumber(second.value, second.length);
+		c = new  LongNumber(second);	
 	}
-	int l = result.size();
-	char* arr = new char[l+1];
-	for (int i = 0; i < l; i++)
-		arr[i] = result[i];
+
 	delete b;
 	delete c;
-	*/
-	return LongNumber("42");
+
+	int l = result.size();
+	char* arr = new char[l + 1]();
+	for (int i = 0; i < l; i++)
+		arr[i] = result[i];
+	return *(new LongNumber(arr));	
+}
+
+LongNumber& operator^(LongNumber& first, int deg)
+{
+	LongNumber* ans = new LongNumber("1");
+	for (int i = 0; i < deg; i++)
+	{
+		LongNumber x = *ans * first;
+		delete ans;
+		ans = new  LongNumber(x);
+	}
+	return *ans;
+}
+
+LongNumber::~LongNumber()
+{
+	delete[] value;
+}
+
+bool  LongNumber::operator!()
+{
+	return *this == LongNumber("0");
 }
