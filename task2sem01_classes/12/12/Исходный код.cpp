@@ -19,8 +19,8 @@ CL13.	Реализовать шаблон класса «полином». Работоспособность тестируется для вар
 int main()
 {
 	LongNumber x1 = LongNumber("21");
-	LongNumber x2 = LongNumber("15");
-	LongNumber x3 = x1 * x2;
+	LongNumber x2 = LongNumber("3");
+	LongNumber x3 = x1 + x2;
 	cout << x3 << endl;
 	return 0;
 

@@ -8,6 +8,19 @@ LongNumber::LongNumber(char* s)
 		value[i] = s[i] - '0';
 }
 
+LongNumber::LongNumber(int* s, int l)
+{
+	length = l;
+	value = new int[length];
+	for (int i = 0; i < length; i++)
+		value[i] = s[i];
+}
+
+LongNumber::~LongNumber()
+{
+	delete[] value;
+}
+
 LongNumber& LongNumber::addZeroes(int x) //+
 {
 	int* arr = new int[x + length];
@@ -60,6 +73,16 @@ bool operator < (LongNumber& first, LongNumber& second)
 		}
 	}
 	return false;
+}
+
+bool operator == (LongNumber& a, LongNumber& b)
+{
+	return ( !(a < b) && !(b < a) );
+}
+
+bool operator <= (LongNumber& a, LongNumber& b)
+{
+	return a == b || a < b;
 }
 
 LongNumber& LongNumber::reduce()
@@ -199,9 +222,54 @@ LongNumber& operator*(LongNumber& f, LongNumber& s)
 			arr[i] = result[l - 1 - i];
 		
 		LongNumber x = LongNumber(arr).addZeroes(i);
-		cout << x << endl;
 		ans = ans + x;
 	}
 	return ans;
+}
 
+LongNumber& operator/(LongNumber& f, LongNumber& s)
+{
+	LongNumber first = LongNumber::max(f, s);
+	LongNumber second = LongNumber::min(f, s);
+	
+	//LongNumber  *b = new LongNumber(first.value, first.length);
+	//LongNumber  *c = new LongNumber(second.value, second.length);
+	
+	
+	string result = "";
+	/*
+
+	// сначала опишу 1 итерацию
+	while (c < b)
+	{
+		
+		// Шаг первый добавим нулей.
+		delete c;
+		c = new LongNumber(second.value, second.length);
+		
+		int diff = b->length - c->length;
+		if (b->value[0] < c->value[0])
+			diff--;
+		c->addZeroes(diff);
+		cout << "here ok\n";
+		break;
+		// Шаг 2 будет отнимать
+		int times = 0;
+		while (c <= b)
+		{
+			*b = *b - *c;
+			times++;
+		}
+		result += char(times + '0');
+		delete c;
+		c = new LongNumber(second.value, second.length);
+	}
+	int l = result.size();
+	char* arr = new char[l+1];
+	for (int i = 0; i < l; i++)
+		arr[i] = result[i];
+	delete b;
+	delete c;
+	*/
+	return LongNumber("42");
 }

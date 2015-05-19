@@ -9,8 +9,8 @@ class LongNumber
 {
 	friend ostream& operator<<(ostream& cout, LongNumber& pol); // +
 	friend bool operator < (LongNumber& first, LongNumber& second); //+
-	friend bool operator == (LongNumber& first, LongNumber& second);
-	friend bool operator <= (LongNumber& first, LongNumber& second);
+	friend bool operator == (LongNumber& first, LongNumber& second); //+
+	friend bool operator <= (LongNumber& first, LongNumber& second); //+
 	friend LongNumber& operator+(LongNumber& f, LongNumber& s); // +
 	friend LongNumber& operator-(LongNumber& f, LongNumber& s); //+
 	friend LongNumber& operator*(LongNumber& f, LongNumber& s); //+
@@ -29,6 +29,8 @@ public://
 public:
 	LongNumber() : value(nullptr), length(0) {}
 	LongNumber(char* s);
+	LongNumber(int* s, int l);
+	~LongNumber();
 	//LongNumber& operator=(const LongNumber& from);
 	static LongNumber& max(LongNumber& a, LongNumber& b); //+
 	static LongNumber& min(LongNumber& a, LongNumber& b); //+
