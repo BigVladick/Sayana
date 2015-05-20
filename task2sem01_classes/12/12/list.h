@@ -152,7 +152,7 @@ U* List<U>::toArray()
 	int index = 0;
 	while (slot)
 	{
-		arr[index++] = *new U(slot->value);
+		arr[index++] = slot->value;
 		slot = slot->next;
 	}
 	return arr;

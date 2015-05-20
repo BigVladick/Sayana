@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 /*
 Комплексное число
 */
@@ -32,13 +33,14 @@ public:
 		double imaginary;
 	};
 	bool  operator! ();
-	ComplexNumber& operator=(const int& num)
+	ComplexNumber& operator=(int num)
 	{
 		value = ComplexValue(num, 0);
 		return *this;
 	}
 	ComplexValue value;
 	ComplexNumber() { ComplexNumber(0, 0); }
+	ComplexNumber(int x);
 	ComplexNumber(double re, double im) : value(ComplexValue(re, im)) {}
 };
 

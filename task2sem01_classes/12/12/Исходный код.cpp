@@ -1,11 +1,9 @@
 #pragma once
 #include <iostream>
-#include <memory>
 #include "list.h"
 #include "complexNumber.h"
 #include "monomial.h"
 #include "polynomial.h"
-#include "longNumber.h"
 
 using namespace std;
 
@@ -19,32 +17,6 @@ CL13.	Реализовать шаблон класса «полином». Работоспособность тестируется для вар
 
 int main()
 {
-	/*
-	LongNumber x1("1");
-	//LongNumber x2("2");
-	//LongNumber x3("3");
-	//LongNumber x4("4");
-
-	List<Monomial<LongNumber>>* monomials = new List<Monomial<LongNumber>>();
-	monomials->append(Monomial<LongNumber>(x1, 0)); //1
-	//monomials->append(Monomial<LongNumber>(x2, 1)); //2x
-	//monomials->append(Monomial<LongNumber>(x3, 2)); //3x^2
-	//monomials->append(Monomial<LongNumber>(x4, 3)); //4x^3
-
-	Polynomial<LongNumber> polynomial = Polynomial<LongNumber>(monomials);
-	cout << polynomial << endl;
-
-	Polynomial<LongNumber>* diff = polynomial - polynomial;
-	cout << *diff << endl;
-	delete diff;
-	//Polynomial<LongNumber>* sum = polynomial + polynomial;
-	//Polynomial<LongNumber>* mul = polynomial * polynomial;
-
-	//delete monomials;
-	return 0;
-	*/
-
-
 	ComplexNumber a = ComplexNumber(1, 1);
 	ComplexNumber b = ComplexNumber(1, -1);
 	ComplexNumber c = ComplexNumber(-1, 1);
@@ -54,24 +26,31 @@ int main()
 	monomials->append(Monomial<ComplexNumber>(b, 1)); // (1-i)*x
 	monomials->append(Monomial<ComplexNumber>(c, 2)); // (-1+i)*x^2
 	monomials->append(Monomial<ComplexNumber>(d, 3)); // (-1-i)*x^3
+	//monomials->print();
 
-	Polynomial<ComplexNumber> polynomial2 = Polynomial<ComplexNumber>(monomials);
+	
+	List<Monomial<int>>* monomials2 = new List<Monomial<int>>();
+	monomials2->append(Monomial<int>(1, 0));
+	monomials2->append(Monomial<int>(1, 1));
+	//monomials2->append(Monomial<int>(3, 2));
+	//monomials2->append(Monomial<int>(4, 3));
+	//monomials2->print();
+
+	Polynomial<int> polynomial2 = Polynomial<int>(monomials2);
 	cout << polynomial2 << endl;
-	Polynomial<ComplexNumber>* res = polynomial2 % polynomial2;
+	Polynomial<int>* res = polynomial2 / polynomial2;
 	cout << *res << endl;
 	delete res;
 	
+
 	Polynomial<ComplexNumber> polynomial = Polynomial<ComplexNumber>(monomials);
-	Polynomial<ComplexNumber>* diff = polynomial * polynomial;
+	Polynomial<ComplexNumber>* diff = polynomial / polynomial;
+	cout << *diff << endl;
 	//cout << *diff << endl;
-	//cout << *diff << endl;
-	delete diff;
 	delete monomials;
 
+
 	/*
-
-
-	
 	List<Monomial>* monomials1 = new List<Monomial>();
 	monomials1->append(Monomial(ComplexNumber(1, 1), 0)); 
 	monomials1->append(Monomial(ComplexNumber(1, -1), 1)); 
@@ -121,5 +100,6 @@ int main()
 	delete div;
 	delete div2;
 	*/
+
 	return 0;
 }

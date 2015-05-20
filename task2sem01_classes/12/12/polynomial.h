@@ -59,36 +59,21 @@ class Polynomial
 	}
 	friend Polynomial* operator-(Polynomial& first, Polynomial& second)
 	{
-		cout << "minus is calcing\n";
-		cout << first << endl << second << endl;
 		Polynomial* result = new Polynomial(first.monomials);
 
-		Monomial<U>* secondList = second.monomials->toArray();
-		delete secondList;
-		cout << "ok!\n";
-
-		/*
 		// прибавим второй список к первому * -1
 		Monomial<U>* secondList = second.monomials->toArray();
-		// тут ок
-
-
 		for (int i = 0; i < second.monomials->length; i++)
-		{
-			//secondList[i].coefficient = *new U(secondList[i].coefficient * (-1));
-		}
-	
-		//result->monomials->fromArray(secondList, second.monomials->length);
-		
+			secondList[i].coefficient = secondList[i].coefficient * (-1);
+
+		result->monomials->fromArray(secondList, second.monomials->length);
+
 		delete secondList;
-		cout << "ok!\n";
-		return result;
-		
+
 		// приведем пободные
 		result->reduce();
-		*/
 
-		
+
 		return result;
 	}
 	friend Polynomial* operator*(Polynomial& first, Polynomial& second)
@@ -124,7 +109,7 @@ class Polynomial
 		
 		if (first == second)
 		{
-			U one = 1;
+			U one(1);
 			result->monomials->append(Monomial<U>(one, 0));
 			return result;
 		}

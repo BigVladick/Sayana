@@ -82,3 +82,9 @@ ComplexNumber& operator*(ComplexNumber& one, int num)
 {
 	return ComplexNumber(one.value.real * num, one.value.imaginary * num);
 }
+
+ComplexNumber::ComplexNumber(int x)
+{
+	if (x == 1)
+		value = ComplexValue(1, 0);
+}
