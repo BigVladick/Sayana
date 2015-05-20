@@ -2,6 +2,7 @@
 
 LongNumber::LongNumber(char* s)
 {
+	sign = true;
 	length = strlen(s);
 	value = new int[length]();
 	for (int i = 0; i < length; i++)
@@ -10,6 +11,8 @@ LongNumber::LongNumber(char* s)
 
 LongNumber::LongNumber(const LongNumber & object)
 {
+	//cout << "copying\n";
+	sign = true;
 	length = object.length;
 	value = new int[length];
 	for (int i = 0; i < length; i++)
@@ -80,6 +83,16 @@ bool operator < (LongNumber& first, LongNumber& second)
 	return false;
 }
 
+bool operator > (LongNumber& first, LongNumber& second)
+{
+	return !(first < second) && !(first == second);
+}
+
+bool operator >= (LongNumber& first, LongNumber& second)
+{
+	return first > second || first == second;
+}
+
 LongNumber& LongNumber::reduce()
 {
 	int amount = 0;
@@ -109,6 +122,10 @@ LongNumber& LongNumber::reduce()
 
 LongNumber& operator+(LongNumber& f, LongNumber& s)
 {
+	if (f.sign && !s.sign)
+	{
+		return f - s;
+	}
 	LongNumber first = LongNumber::max(f, s);
 	LongNumber second = LongNumber::min(f, s);
 	string result = "";
@@ -220,6 +237,16 @@ LongNumber& operator*(LongNumber& f, LongNumber& s)
 	return *(new LongNumber(ans));
 }
 
+LongNumber& operator*(LongNumber& f, int num)
+{
+	LongNumber* sl = new LongNumber(f);
+	if (num == -1)
+	{
+		sl->sign = false;
+	}
+	return *sl;
+}
+
 LongNumber& operator/(LongNumber& f, LongNumber& s)
 {
 	LongNumber first = LongNumber::max(f, s);
@@ -279,6 +306,7 @@ LongNumber& operator^(LongNumber& first, int deg)
 
 LongNumber::~LongNumber()
 {
+	//cout << "destr\n";
 	delete[] value;
 }
 

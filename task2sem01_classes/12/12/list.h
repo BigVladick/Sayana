@@ -39,7 +39,7 @@ public:
 		Inner* previous;
 		Inner() {}
 		~Inner() {}
-		Inner(U val) : value(), next(nullptr), previous(nullptr) {}
+		Inner(U val) : value(val), next(nullptr), previous(nullptr) {}
 	};
 	// начало списка
 	Inner* begin;
@@ -100,12 +100,8 @@ void List<U>::remove(Inner* sacredfice)
 template <class U>
 void List<U>::append(U x)
 {
-	cout << "append\n";
 	length++;
 	Inner* nova = new Inner(x);
-	cout << x << endl;
-	cout << nova->value << endl;
-	cout << "ja\n";
 	if (begin == nullptr)
 	{
 		begin = nova;
@@ -156,7 +152,7 @@ U* List<U>::toArray()
 	int index = 0;
 	while (slot)
 	{
-		arr[index++] = slot->value;
+		arr[index++] = *new U(slot->value);
 		slot = slot->next;
 	}
 	return arr;
