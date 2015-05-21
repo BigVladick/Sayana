@@ -49,5 +49,5 @@ template <class U>
 Monomial<U>::Monomial(const Monomial& from)
 {
 	degree = from.degree;
-	coefficient = U(from.coefficient);
+	coefficient = from.coefficient;
 }

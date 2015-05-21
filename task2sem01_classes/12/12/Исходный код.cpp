@@ -4,6 +4,7 @@
 #include "complexNumber.h"
 #include "monomial.h"
 #include "polynomial.h"
+#include "longNumber.h"
 
 using namespace std;
 
@@ -17,6 +18,31 @@ CL13.	Реализовать шаблон класса «полином». Работоспособность тестируется для вар
 
 int main()
 {
+
+	cout << "i am rdy\n";
+	LongNumber x1("1");
+	LongNumber x2("1");
+	cout << x1 << " + " << x2 << " = " << x1 + x2 << endl;
+	cout << x1 << " - " << x2 << " = " << x1 - x2 << endl;
+	cout << x1 << " * " << x2 << " = " << x1 * x2 << endl;
+	cout << x1 << " / " << x2 << " = " << x1 / x2 << endl;
+
+	List<Monomial<LongNumber>>* monomialsLN = new List<Monomial<LongNumber>>();
+	monomialsLN->append(Monomial<LongNumber>(x1, 0));
+	monomialsLN->append(Monomial<LongNumber>(x2, 1));
+	monomialsLN->print();
+
+	Polynomial<LongNumber> polynomialN = Polynomial<LongNumber>(monomialsLN);
+	cout << polynomialN << endl;
+	Polynomial<LongNumber>* rr = polynomialN * polynomialN;
+	Polynomial<LongNumber>* rr2 = *rr / polynomialN;
+	cout << *rr2 << endl;
+	
+
+	return 0;
+
+
+	/*
 	ComplexNumber a = ComplexNumber(1, 1);
 	ComplexNumber b = ComplexNumber(1, -1);
 	ComplexNumber c = ComplexNumber(-1, 1);
@@ -49,6 +75,7 @@ int main()
 	//cout << *diff << endl;
 	delete monomials;
 
+	*/
 
 	/*
 	List<Monomial>* monomials1 = new List<Monomial>();

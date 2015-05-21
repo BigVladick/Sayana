@@ -78,11 +78,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="complexNumber.cpp" />
+    <ClCompile Include="longNumber.cpp" />
     <ClCompile Include="Исходный код.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="complexNumber.h" />
     <ClInclude Include="list.h" />
+    <ClInclude Include="longNumber.h" />
     <ClInclude Include="monomial.h" />
     <ClInclude Include="polynomial.h" />
   </ItemGroup>

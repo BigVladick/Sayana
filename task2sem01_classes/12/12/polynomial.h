@@ -13,14 +13,6 @@ using namespace std;
 Операции: +, -, *, /, %
 */
 
-/*
-template <class U>
-class Polynomial;
-
-template <class U>
-Polynomial<U>* operator+(Polynomial<U>& first, Polynomial<U>& second);
-*/
-
 template <class U>
 class Polynomial
 {
